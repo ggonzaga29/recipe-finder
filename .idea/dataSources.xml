@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="sample.db" uuid="7df41321-02b8-4ae9-ba8d-1994a5991854">
+    <data-source source="LOCAL" name="recipeFinder.db" uuid="9a61c868-71f5-4e7b-8af4-056287e8d4b6">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:C:\Users\giang\code\java\recipeFinder\sample.db</jdbc-url>
+      <jdbc-url>jdbc:sqlite:db/recipeFinder.db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>
