@@ -1,12 +1,10 @@
 package com.recipeFinder.views;
 
-import com.recipeFinder.components.Spacer;
+import com.recipeFinder.components.SidebarButton;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 public class HomeView extends JFrame {
     public HomeView() {
@@ -19,31 +17,29 @@ public class HomeView extends JFrame {
         sidebarPanel.setLayout(new BoxLayout(sidebarPanel, BoxLayout.Y_AXIS));
 
         // Create buttons for the sidebar
-        JButton button1 = createSidebarButton("RECIPES");
-        JButton button2 = createSidebarButton("BUTTON 2");
-        JButton button3 = createSidebarButton("Button 3");
-        JButton button4 = createSidebarButton("Profile");
+        JButton button1 = SidebarButton.create("RECIPES");
+        JButton button2 = SidebarButton.create("BUTTON 2");
+        JButton button3 = SidebarButton.create("Button 3");
+        JButton button4 = SidebarButton.create("Profile");
 
         int buttonPadding = 10;
         button1.setBorder(new EmptyBorder(buttonPadding, buttonPadding, buttonPadding, buttonPadding));
         button2.setBorder(new EmptyBorder(buttonPadding, buttonPadding, buttonPadding, buttonPadding));
         button3.setBorder(new EmptyBorder(buttonPadding, buttonPadding, buttonPadding, buttonPadding));
         button4.setBorder(new EmptyBorder(buttonPadding, buttonPadding, buttonPadding, buttonPadding));
+
         // Create a panel for the sidebarTitle with background color
         JPanel sidebarTitlePanel = new JPanel();
         sidebarTitlePanel.setBackground(Color.decode("#926DDE"));
         sidebarTitlePanel.setLayout(new BoxLayout(sidebarTitlePanel, BoxLayout.Y_AXIS));
-//        sidebarTitlePanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Label
         JLabel sidebarTitle = new JLabel("<html><body><br><h1>&nbsp;&nbsp;RecipeFinder</h1></body></html>");
         sidebarTitle.setForeground(Color.white);
-//        sidebarTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
         sidebarTitlePanel.add(sidebarTitle);
 
-        // Set preferred height of sidebarTitlePanel based on the height of the sidebarTitle label
-        Dimension titlePanelSize = sidebarTitlePanel.getPreferredSize();
-        titlePanelSize.height = 75;
+        // Set preferred height of sidebarTitlePanel
+        Dimension titlePanelSize = new Dimension(200, 75);
         sidebarTitlePanel.setPreferredSize(titlePanelSize);
 
         sidebarPanel.add(sidebarTitlePanel);
@@ -59,7 +55,7 @@ public class HomeView extends JFrame {
 
         // Set the layout manager for the content panel
         contentPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-        contentPanel.add(new JLabel("ss"));
+        contentPanel.add(new RecipeView());
 
         // Add sidebar panel and content panel to the main frame
         add(sidebarPanel, BorderLayout.WEST);
@@ -73,8 +69,7 @@ public class HomeView extends JFrame {
         button4.setMaximumSize(maxSidebarSize);
         sidebarTitle.setMaximumSize(maxSidebarSize);
 
-        Dimension sidebarSize = sidebarPanel.getPreferredSize();
-        sidebarSize.width = 200;
+        Dimension sidebarSize = new Dimension(200, sidebarPanel.getPreferredSize().height);
         sidebarPanel.setPreferredSize(sidebarSize);
 
         // Set the size and make the frame visible
@@ -82,38 +77,7 @@ public class HomeView extends JFrame {
         setVisible(true);
     }
 
-    private JButton createSidebarButton(String text) {
-        JButton button = new JButton(text);
-        button.setPreferredSize(new Dimension(300, 50));
-        button.setBackground(new Color(0, 0, 0, 0));
-        button.setForeground(Color.WHITE);
-        button.setBorder(BorderFactory.createEmptyBorder());
-        button.setFocusPainted(false);
-        button.setHorizontalAlignment(SwingConstants.LEFT);
-        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
-
-        button.addMouseListener(new MouseListener() {
-            public void mouseClicked(MouseEvent e) {
-                button.setBackground(new Color(255, 255, 255, 50));
-            }
-
-            public void mousePressed(MouseEvent e) {
-
-            }
-
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
-            public void mouseEntered(MouseEvent e) {
-                button.setBackground(new Color(255, 255, 255, 20));
-            }
-
-            public void mouseExited(MouseEvent e) {
-                button.setBackground(new Color(0, 0, 0, 0));
-            }
-        });
-
-        return button;
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new HomeView());
     }
 }
