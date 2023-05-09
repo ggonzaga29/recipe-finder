@@ -14,20 +14,15 @@ import com.recipeFinder.components.LinkLabel;
 import mdlaf.utils.MaterialColors;
 
 public class LoginView extends JFrame {
-    private JTextField usernameField;
+    private final JTextField usernameField;
 
-    private JPasswordField passwordField;
-    private JButton loginButton;
-    private JLabel messageLabel;
+    private final JPasswordField passwordField;
+    private final JButton loginButton;
+    private final JLabel messageLabel;
     private JLabel label;
 
 
-    public void showLogin() {
-        pack();
-    }
 
-    public void closeLogin() {
-    }
 
     public LoginView() {
         setTitle("Login Form");
@@ -77,8 +72,6 @@ public class LoginView extends JFrame {
         panel.add(loginButton, constraints);
 
 
-
-
         LinkLabel linkLabel = new LinkLabel("Click here to register", "Click here to register");
         linkLabel.addMouseListener(new MouseListener() {
             @Override
@@ -117,6 +110,14 @@ public class LoginView extends JFrame {
         panel.add(messageLabel, constraints);
 
         add(panel);
+    }
+
+    public void showLogin() {
+        System.out.println("sdf");
+        this.setVisible(true);
+    }
+
+    public void closeLogin() {
     }
 
 

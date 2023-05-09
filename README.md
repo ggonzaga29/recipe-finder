@@ -1,6 +1,6 @@
 # Recipe Finder
 
-Run program (mvn or mvnv)
+Run program (mvn or mvnw)
 ```bash
-mvnv exec:java -D"exec.mainClass"="com.recipeFinder.Main"
+mvnw exec:java -D"exec.mainClass"="com.recipeFinder.Main"
 ```
