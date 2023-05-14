@@ -12,7 +12,7 @@ public class Constants {
 
     public static Font getMainFont() {
         try {
-            File fontFile = new File("src/main/resources/Inter.ttf");
+            File fontFile = new File("src/main/resources/OpenSans.ttf");
 
             // Create the font instance by loading the font file
             Font customFont = Font.createFont(Font.TRUETYPE_FONT, fontFile);

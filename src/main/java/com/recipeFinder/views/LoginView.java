@@ -6,6 +6,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Objects;
+import java.util.prefs.Preferences;
 
 import com.formdev.flatlaf.FlatLightLaf;
 import com.recipeFinder.lib.Constants;
@@ -22,6 +23,8 @@ public class LoginView extends JFrame {
     private JCheckBox rememberMeCheckbox;
     private LoginController controller;
     private JPanel mainPanel;
+
+    Preferences preferences;
 
     public LoginView() {
         mainPanel = createMainPanel();
@@ -41,6 +44,7 @@ public class LoginView extends JFrame {
     }
 
     protected JPanel createMainPanel() {
+
         setTitle("Flavor Finder Login");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setIconImage(Constants.STANDARD_ICON);
@@ -118,7 +122,6 @@ public class LoginView extends JFrame {
         panel.add(linkLabel.label, constraints);
 
         // bind listeners to controller
-
         loginButton.addActionListener(e -> {
             String username = getUsername();
             String password = getPassword();
@@ -153,6 +156,10 @@ public class LoginView extends JFrame {
 
     public String getPassword() {
         return new String(passwordField.getPassword());
+    }
+
+    public JPasswordField getPasswordField() {
+        return passwordField;
     }
 
     public void open() {
