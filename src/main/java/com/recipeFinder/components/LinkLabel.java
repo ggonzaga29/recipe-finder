@@ -12,7 +12,7 @@ public class LinkLabel extends JLabel {
 
         label = new JLabel("<html>" + initialText + "</html");
         label.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        label.setForeground(Color.BLUE);
+        label.setForeground(Color.decode("#3498db"));
 
         label.addMouseListener(new MouseListener() {
             public void mouseClicked(MouseEvent e) {

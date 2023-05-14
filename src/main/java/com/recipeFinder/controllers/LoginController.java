@@ -1,83 +1,71 @@
 package com.recipeFinder.controllers;
 
-import com.recipeFinder.views.LoginView;
-import com.recipeFinder.lib.DBHandler;
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.recipeFinder.models.UserModel;
+import com.recipeFinder.views.LoginView;
+import com.recipeFinder.views.RegistrationView;
 
-import java.awt.event.ActionEvent;
-import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.sql.ResultSet;
+import javax.swing.*;
 import java.sql.SQLException;
-import java.util.Objects;
-
-import org.json.JSONObject;
+import java.util.prefs.Preferences;
 
 public class LoginController {
-    private final LoginView loginView;
+    private LoginView view;
+    private Preferences preferences;
 
-    LoginController() {
-        loginView = new LoginView();
-        loginView.addActionListener(this::handleLogin);
+    public LoginController(LoginView view) {
+        preferences = Preferences.userNodeForPackage(getClass());
+
+        this.view = view;
+        view.setController(this);
+
+        boolean rememberMe = preferences.getBoolean("rememberMe", false);
+        if (rememberMe) {
+            view.setRememberMeCheckbox(true);
+            String storedUsername = preferences.get("username", null);
+            view.setUsernameField(storedUsername);
+        }
     }
 
-    public void initialize() {
-        loginView.showLogin();
+    public void redirectToRegistration() {
+        view.close();
+        RegistrationView registrationView = new RegistrationView();
+        RegistrationController registrationController = new RegistrationController(registrationView);
+        SwingUtilities.invokeLater(registrationView::open);
     }
 
-    public void JSONTest() {
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://jsonplaceholder.typicode.com/posts/1"))
-                .method("GET", HttpRequest.BodyPublishers.noBody())
-                .build();
-        HttpResponse<String> response = null;
+    public void handleLogin(String username, String password) {
+        if(username.length() == 0 || password.length() == 0) {
+            JOptionPane.showMessageDialog(view, "Username and password fields should not be empty.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String usernameTrimmed = username.trim();
+
+        if (view.getRememberMe()) {
+            preferences.putBoolean("rememberMe", true);
+            preferences.put("username", usernameTrimmed);
+        } else {
+            preferences.putBoolean("rememberMe", false);
+            preferences.remove("username");
+        }
 
         try {
-            response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException | InterruptedException err) {
+            UserModel model = UserModel.findByUsername(usernameTrimmed);
+
+            if(model == null) {
+                // dont print "User not found" for security reasons
+                JOptionPane.showMessageDialog(view, "Invalid username or password.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), model.getPassword());
+            if (result.verified) {
+                JOptionPane.showMessageDialog(view, "Login Success!", "Login Success!", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (SQLException err) {
             err.printStackTrace();
         }
-
-        var post = new JSONObject(response.body());
-        loginView.displayMessage(String.valueOf(post), "success");
     }
 
-    private void handleLogin(ActionEvent e) {
-        DBHandler dbHandler = new DBHandler();
-
-        String username = loginView.getUsername();
-        String password = loginView.getPassword();
-
-        try {
-            dbHandler.connect();
-
-            String query = "SELECT * FROM users WHERE username = '" + username + "'";
-            ResultSet resultSet = dbHandler.executeQuery(query);
-
-            UserModel user = new UserModel();
-            if (resultSet.next()) {
-                user.setUserID(resultSet.getInt("user_id"));
-                user.setUserName(resultSet.getString("username"));
-                user.setPassword(resultSet.getString("password"));
-            } else {
-                loginView.displayMessage("User not found", "error");
-            }
-
-            if(Objects.equals(user.getPassword(), password)) {
-                loginView.displayMessage("User found!", "success");
-            }
-
-        } catch (SQLException ex) {
-            throw new RuntimeException(ex);
-        } finally {
-            try {
-                dbHandler.disconnect();
-            } catch (SQLException err) {
-                err.printStackTrace();
-            }
-        }
-    }
 }

@@ -2,137 +2,149 @@ package com.recipeFinder.views;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Objects;
 
-import mdlaf.components.button.MaterialButtonUI;
+import com.formdev.flatlaf.FlatLightLaf;
+import com.recipeFinder.lib.Constants;
+import com.recipeFinder.controllers.LoginController;
 
 import com.recipeFinder.components.LinkLabel;
-import mdlaf.utils.MaterialColors;
 
 public class LoginView extends JFrame {
-    private final JTextField usernameField;
+    private JTextField usernameField;
 
-    private final JPasswordField passwordField;
-    private final JButton loginButton;
-    private final JLabel messageLabel;
-    private JLabel label;
-
-
-
+    private JPasswordField passwordField;
+    private JButton loginButton;
+    private JLabel messageLabel;
+    private JCheckBox rememberMeCheckbox;
+    private LoginController controller;
+    private JPanel mainPanel;
 
     public LoginView() {
-        setTitle("Login Form");
+        mainPanel = createMainPanel();
+        getContentPane().add(mainPanel);
+    }
+
+    public void setController(LoginController controller) {
+        this.controller = controller;
+    }
+
+    public void updateView() {
+
+    }
+
+    public JPanel getMainPanel() {
+        return mainPanel;
+    }
+
+    protected JPanel createMainPanel() {
+        setTitle("Flavor Finder Login");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(500, 300);
+        setIconImage(Constants.STANDARD_ICON);
+        setSize(350, 600);
         setResizable(false);
         setLocationRelativeTo(null);
-//        setDefaultLookAndFeelDecorated(true);
+        setDefaultLookAndFeelDecorated(true);
 
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.insets = new Insets(10, 10, 10, 10);
 
+        // Icon Label
+        JLabel iconLabel = new JLabel("<html><body><h2>Welcome Back!</h1></body></html>");
+        Image scaledImage = Constants.STANDARD_ICON.getScaledInstance(64, 64, Image.SCALE_SMOOTH);
+        iconLabel.setIcon(new ImageIcon(scaledImage));
+        constraints.gridx = 1;
+        constraints.gridy = 0;
+//        constraints.insets = new Insets(10, 10, 10, 10);
+        constraints.anchor = GridBagConstraints.CENTER;
+        panel.add(iconLabel, constraints);
+
         // Username Label
-        JLabel usernameLabel = new JLabel("<html><body style='width: 100px'>Username:</body></html>");
-        constraints.gridx = 0;
+        JLabel usernameLabel = new JLabel("<html><body style='width: 100px'>Username</body></html>");
+        constraints.gridx = 1;
         constraints.gridy = 1;
+        constraints.anchor = GridBagConstraints.LINE_START;
+        constraints.insets = new Insets(20, 10, -2, 10);
         panel.add(usernameLabel, constraints);
 
         // Username Text Field
         usernameField = new JTextField(20);
         constraints.gridx = 1;
-        constraints.gridy = 1;
+        constraints.gridy = 2;
+        constraints.insets = new Insets(10, 10, 10, 10);
         panel.add(usernameField, constraints);
 
         // Password Label
-        JLabel passwordLabel = new JLabel("<html><body style='width: 100px'>Password:</body></html>");
-        constraints.gridx = 0;
-        constraints.gridy = 2;
+        JLabel passwordLabel = new JLabel("<html><body style='width: 100px'>Password</body></html>");
+        constraints.gridx = 1;
+        constraints.gridy = 3;
+        constraints.insets = new Insets(10, 10, -2, 10);
         panel.add(passwordLabel, constraints);
 
         // Password Text Field
         passwordField = new JPasswordField(20);
         constraints.gridx = 1;
-        constraints.gridy = 2;
+        constraints.gridy = 4;
+        constraints.insets = new Insets(10, 10, 10, 10);
         panel.add(passwordField, constraints);
+
+        rememberMeCheckbox = new JCheckBox("Remember me");
+        constraints.gridx = 0;
+        constraints.gridy = 5;
+        constraints.gridwidth = 2;
+        constraints.anchor = GridBagConstraints.LINE_START;
+        panel.add(rememberMeCheckbox, constraints);
 
         // Login Button
         loginButton = new JButton("Login");
-        loginButton.setUI(new MaterialButtonUI());
-        loginButton.setBackground(MaterialColors.LIGHT_BLUE_500);
-        loginButton.setForeground(MaterialColors.WHITE);
+
         constraints.gridx = 0;
-        constraints.gridy = 3;
+        constraints.gridy = 6;
         constraints.gridwidth = 2;
+        constraints.insets = new Insets(20, 10, 0, 10);
         constraints.anchor = GridBagConstraints.CENTER;
         panel.add(loginButton, constraints);
 
-
         LinkLabel linkLabel = new LinkLabel("Click here to register", "Click here to register");
-        linkLabel.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                closeLogin();
 
-                RegistrationView registrationView = new RegistrationView();
-                registrationView.showRegistration();
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {}
-
-            @Override
-            public void mouseReleased(MouseEvent e) {}
-
-            @Override
-            public void mouseEntered(MouseEvent e) {}
-
-            @Override
-            public void mouseExited(MouseEvent e) {}
-        });
 
         constraints.gridx = 0;
-        constraints.gridy = 4;
+        constraints.gridy = 7;
         constraints.gridwidth = 2;
         panel.add(linkLabel.label, constraints);
 
-        // Message Label
-        messageLabel = new JLabel();
-        messageLabel.setText(" ");
-        messageLabel.setForeground(Color.RED);
-        constraints.gridx = 0;
-        constraints.gridy = 0;
-        constraints.gridwidth = 2;
-        panel.add(messageLabel, constraints);
+        // bind listeners to controller
 
-        add(panel);
+        loginButton.addActionListener(e -> {
+            String username = getUsername();
+            String password = getPassword();
+            controller.handleLogin(username, password);
+        });
+
+        linkLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                controller.redirectToRegistration();
+            }
+        });
+
+        return panel;
     }
 
-    public void showLogin() {
-        System.out.println("sdf");
-        this.setVisible(true);
+    public void setRememberMeCheckbox(boolean x) {
+        rememberMeCheckbox.setSelected(x);
     }
 
-    public void closeLogin() {
+    public boolean getRememberMe() {
+        return rememberMeCheckbox.isSelected();
     }
 
-
-    public void displayMessage(String msg, String type) {
-        messageLabel.setText("<html><body style='width: 100px'>" + msg + "</body></html>");
-
-        if (Objects.equals(type, "success")) {
-            messageLabel.setForeground(MaterialColors.BLUE_400);
-        } else if (Objects.equals(type, "error")) {
-            messageLabel.setForeground(MaterialColors.RED_400);
-        }
-    }
-
-    public void addActionListener(ActionListener listener) {
-        loginButton.addActionListener(listener);
+    public void setUsernameField(String text) {
+        usernameField.setText(text);
     }
 
     public String getUsername() {
@@ -143,7 +155,13 @@ public class LoginView extends JFrame {
         return new String(passwordField.getPassword());
     }
 
+    public void open() {
+        this.setVisible(true);
+    }
 
+    public void close() {
+        this.setVisible(false);
+    }
 }
 
 

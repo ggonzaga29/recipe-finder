@@ -1,5 +1,7 @@
 package com.recipeFinder.lib;
 
+import com.recipeFinder.lib.Constants;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -10,7 +12,7 @@ public class DBHandler {
     private Connection connection;
 
     public void connect() throws SQLException {
-        connection = DriverManager.getConnection("jdbc:sqlite:db/recipeFinder.db");
+        connection = DriverManager.getConnection(Constants.SQLITE_URL);
     }
 
     public void disconnect() throws SQLException {
