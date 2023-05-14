@@ -109,7 +109,7 @@ public class LoginView extends JFrame {
         constraints.anchor = GridBagConstraints.CENTER;
         panel.add(loginButton, constraints);
 
-        LinkLabel linkLabel = new LinkLabel("Click here to register", "Click here to register");
+        LinkLabel linkLabel = new LinkLabel("Dont have an account?", "Dont have an account?");
 
 
         constraints.gridx = 0;

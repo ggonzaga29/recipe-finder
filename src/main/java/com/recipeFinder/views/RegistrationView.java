@@ -104,7 +104,7 @@ public class RegistrationView extends JFrame {
         panel.add(registerButton, constraints);
 
 
-        LinkLabel linkLabel = new LinkLabel("Click here to register", "Click here to register");
+        LinkLabel linkLabel = new LinkLabel("Already have an account?", "Already have an account?");
         linkLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {

@@ -17,7 +17,6 @@ public class LinkLabel extends JLabel {
         label.addMouseListener(new MouseListener() {
             public void mouseClicked(MouseEvent e) {
                 // Handle the label click event here
-                System.out.println("Label clicked!");
             }
 
             public void mousePressed(MouseEvent e) {}
