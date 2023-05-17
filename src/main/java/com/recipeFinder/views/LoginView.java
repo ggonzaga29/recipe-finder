@@ -51,7 +51,7 @@ public class LoginView extends JFrame {
         setSize(350, 600);
         setResizable(false);
         setLocationRelativeTo(null);
-        setDefaultLookAndFeelDecorated(true);
+//        setDefaultLookAndFeelDecorated(true);
 
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
@@ -114,7 +114,6 @@ public class LoginView extends JFrame {
         panel.add(loginButton, constraints);
 
         LinkLabel linkLabel = new LinkLabel("Dont have an account?", "Dont have an account?");
-
 
         constraints.gridx = 0;
         constraints.gridy = 7;

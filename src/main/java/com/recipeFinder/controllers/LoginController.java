@@ -1,17 +1,18 @@
 package com.recipeFinder.controllers;
 
-import at.favre.lib.crypto.bcrypt.BCrypt;
-import com.recipeFinder.models.UserModel;
-import com.recipeFinder.views.LoginView;
-import com.recipeFinder.views.RegistrationView;
-
 import javax.swing.*;
 import java.sql.SQLException;
 import java.util.prefs.Preferences;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
+
+import com.recipeFinder.models.UserModel;
+import com.recipeFinder.views.LoginView;
+import com.recipeFinder.views.RegistrationView;
+
 public class LoginController {
-    private LoginView view;
-    private Preferences preferences;
+    private final LoginView view;
+    private final Preferences preferences;
 
     private OnLoginSuccessListener loginSuccessListener;
 

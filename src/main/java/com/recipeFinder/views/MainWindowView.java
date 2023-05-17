@@ -1,8 +1,15 @@
 package com.recipeFinder.views;
 
+import com.recipeFinder.components.ImagePanel;
+import com.recipeFinder.components.RecipeCard;
 import com.recipeFinder.components.SideMenuPanel;
 import com.recipeFinder.lib.Constants;
+import com.recipeFinder.lib.Recipe;
+import com.recipeFinder.lib.RecipeAPIHelper;
+import com.recipeFinder.lib.WrapLayout;
+import com.recipeFinder.models.RecipeModel;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
@@ -10,30 +17,41 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.TimerTask;
 
 public class MainWindowView extends JFrame {
     public MainWindowView() {
         setTitle("Main window");
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+//        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setIconImage(Constants.STANDARD_ICON);
 //        setSize(screenSize.width, screenSize.height);
-        setSize(1366, 768);
+        setSize(1235, 768);
 //        setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 //        setUndecorated(true);
+        setMinimumSize(new Dimension(850, 600));
 
         JPanel navigationBar = new JPanel();
         JButton menuButton = new JButton(new ImageIcon("src/main/resources/bars-solid.png"));
-        menuButton.setBorder(new EmptyBorder(10,10,10,10));
+        menuButton.setBorder(new EmptyBorder(10, 10, 10, 10));
         menuButton.setBackground(Color.decode("#2a2c2e"));
 //        navigationBar.add(name);
         navigationBar.setPreferredSize(new Dimension(getWidth(), 50));
         navigationBar.setBackground(Color.decode("#2a2c2e"));
         navigationBar.setLayout(new BoxLayout(navigationBar, BoxLayout.X_AXIS));
-        navigationBar.setBorder(new EmptyBorder(0, 0, 0,10));
+        navigationBar.setBorder(new EmptyBorder(0, 0, 0, 10));
         navigationBar.add(menuButton);
+        navigationBar.add(Box.createHorizontalStrut(20));
+        navigationBar.add(new JLabel("<html><h2>Flavor Finder</h2></html>"));
         navigationBar.add(Box.createHorizontalGlue());
         navigationBar.add(new JLabel("Welcome, Gian Gonzaga"));
 
@@ -112,42 +130,42 @@ public class MainWindowView extends JFrame {
         });
 
         // Create components for the main content panel
-        JLabel mainLabel = new JLabel("Main Content");
-        mainLabel.setHorizontalAlignment(JLabel.CENTER);
-        mainContentPanel.add(mainLabel, BorderLayout.CENTER);
-        mainContentPanel.setBackground(Color.decode("#3c3f41"));
 
         // card layout
         CardLayout cardLayout = new CardLayout();
         JPanel cardPanel = new JPanel();
         cardPanel.setLayout(cardLayout);
-        cardPanel.setBackground(Color.white);
+//        cardPanel.setBackground(Color.blue);
         mainContentPanel.add(cardPanel);
 
         // recipes view
         // Create Panel 1
+        JPanel recipePanel = new JPanel(new BorderLayout());
+        recipePanel.setBorder(new EmptyBorder(0, 0, 0, 0));
+
         JPanel recipeCardsPanel = new JPanel();
-        recipeCardsPanel.setBackground(Color.white);
-//        recipeCardsPanel.add();
-//        recipeCardsPanel.setLayout(new WrapLayout(FlowLayout.LEADING, 10, 10));
-        recipeCardsPanel.add(createCard("12"));
-        recipeCardsPanel.add(createCard("12"));
-        recipeCardsPanel.add(createCard("12"));
-        recipeCardsPanel.add(createCard("12"));
-        recipeCardsPanel.add(createCard("12"));
-        recipeCardsPanel.add(createCard("12"));
-        recipeCardsPanel.add(createCard("12"));
-        recipeCardsPanel.add(createCard("12"));
+        recipeCardsPanel.setLayout(new FlowLayout(FlowLayout.LEADING, 10, 10));
+        recipeCardsPanel.setPreferredSize(new Dimension(recipePanel.getWidth(), Integer.MAX_VALUE));
+        recipeCardsPanel.setBackground(Color.decode("#636567"));
+
+        JPanel recipeSearchPanel = new JPanel();
+        JTextField recipeSearchInput = new JTextField();
+
+        int width = (int) recipeCardsPanel.getPreferredSize().getWidth();
+        System.out.println(width);
+        recipeSearchPanel.setPreferredSize(new Dimension(width, 100));
+        recipeSearchPanel.add(recipeSearchInput, BorderLayout.CENTER);
+
         JScrollPane jScrollPane = new JScrollPane(recipeCardsPanel);
-        jScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        jScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         jScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        jScrollPane.setSize(cardPanel.getWidth(), cardPanel.getHeight());
-        // Create Panel 2
+        jScrollPane.getVerticalScrollBar().setUnitIncrement(16);
+        jScrollPane.setPreferredSize(new Dimension(recipeCardsPanel.getWidth(), Integer.MAX_VALUE));
+        jScrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
+
         JPanel panel2 = new JPanel();
-//        panel2.setBackground(Color.GREEN);
         panel2.add(new JLabel("Panel 2"));
 
-        // Add the panels to the cardPanel with unique names
         cardPanel.add(jScrollPane, "panel1");
         cardPanel.add(panel2, "panel2");
 
@@ -159,7 +177,6 @@ public class MainWindowView extends JFrame {
             cardLayout.show(cardPanel, "panel2");
         });
 
-
         // Create layout for the frame
         setLayout(new BorderLayout());
         add(navigationBar, BorderLayout.NORTH);
@@ -167,18 +184,29 @@ public class MainWindowView extends JFrame {
         add(mainContentPanel, BorderLayout.CENTER);
 
         setVisible(true);
+
+        SwingWorker<ArrayList<RecipeModel>, Void> recipeFetcher = new SwingWorker<ArrayList<RecipeModel>, Void>() {
+            @Override
+            protected ArrayList<RecipeModel> doInBackground() throws Exception {
+                return RecipeModel.getRecipes(20);
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    ArrayList<RecipeModel> recipes = get();
+                    for (RecipeModel recipe : recipes) {
+                        recipeCardsPanel.add(new RecipeCard(recipe));
+                    }
+
+                    recipeCardsPanel.revalidate();
+                    recipeCardsPanel.repaint();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        recipeFetcher.execute();
     }
-
-    private JPanel createCard(String cardTitle) {
-        JPanel cardPanel = new JPanel();
-        cardPanel.setPreferredSize(new Dimension(300, 200)); // Set preferred size for the card panel
-        cardPanel.setLayout(new BorderLayout());
-
-        JLabel titleLabel = new JLabel(cardTitle);
-        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        cardPanel.add(titleLabel, BorderLayout.CENTER);
-
-        return cardPanel;
-    }
-
 }
