@@ -68,8 +68,6 @@ public class LoginController {
 
             BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), model.getPassword());
             if (result.verified) {
-                JOptionPane.showMessageDialog(view, "Login Success!", "Login Success!", JOptionPane.INFORMATION_MESSAGE);
-
                 if (loginSuccessListener != null) {
                     loginSuccessListener.onLoginSuccess();
                 }

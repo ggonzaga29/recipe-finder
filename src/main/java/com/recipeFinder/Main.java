@@ -25,14 +25,12 @@ public class Main {
             // launch the login
             LoginView loginView = new LoginView();
             LoginController loginController = new LoginController(loginView);
-//            SwingUtilities.invokeLater(loginView::open);
+            SwingUtilities.invokeLater(loginView::open);
 
             loginController.setOnLoginSuccessListener(() -> {
                 SwingUtilities.invokeLater(loginView::close);
-
-
+                MainWindowView mainWindowView = new MainWindowView();
             });
-            MainWindowView mainWindowView = new MainWindowView();
         } catch (RuntimeException e) {
             throw new RuntimeException(e);
         }
