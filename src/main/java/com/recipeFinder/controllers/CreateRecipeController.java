@@ -10,8 +10,8 @@ public class CreateRecipeController {
         view.setController(this);
     }
 
-    public void handleCreateRecipe(String label, Double calories, Double weight, int yield, String instructions) {
-        CustomRecipeModel customRecipe = new CustomRecipeModel(label, calories, weight, yield, instructions);
+    public void handleCreateRecipe(String label, Double calories, Double weight, int yield, String instructions, String ingredients) {
+        CustomRecipeModel customRecipe = new CustomRecipeModel(label, calories, weight, yield, instructions, ingredients);
         customRecipe.save();
     }
 }

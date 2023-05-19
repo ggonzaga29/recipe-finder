@@ -3,6 +3,7 @@ package com.recipeFinder.controllers;
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.recipeFinder.models.UserModel;
 import com.recipeFinder.views.LoginView;
+import com.recipeFinder.views.MainWindow;
 import com.recipeFinder.views.RegistrationView;
 
 import javax.swing.*;
@@ -23,6 +24,11 @@ public class RegistrationController {
         LoginView loginView = new LoginView();
         LoginController loginController = new LoginController(loginView);
         SwingUtilities.invokeLater(loginView::open);
+
+        loginController.setOnLoginSuccessListener(() -> {
+            SwingUtilities.invokeLater(loginView::close);
+            MainWindow mainWindowView = new MainWindow();
+        });
     }
 
     public void handleRegistration(String username, String password, String confirmPassword) {

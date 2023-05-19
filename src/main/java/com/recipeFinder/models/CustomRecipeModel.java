@@ -3,6 +3,7 @@ package com.recipeFinder.models;
 import com.recipeFinder.utils.DBHandler;
 
 import java.sql.SQLException;
+import java.util.Arrays;
 
 public class CustomRecipeModel {
     private String label;
@@ -10,14 +11,17 @@ public class CustomRecipeModel {
     private Double weight;
     private int yield;
     private String instructions;
+    private String ingredients;
 
 
-    public CustomRecipeModel(String label, Double calories, Double weight, int yield, String instructions) {
+    public CustomRecipeModel(String label, Double calories, Double weight, int yield, String instructions, String ingredients) {
         this.label = label;
         this.calories = calories;
         this.weight = weight;
         this.yield = yield;
         this.instructions = instructions;
+        String[] ingredientsArray = ingredients.trim().split("[\n,]+");
+        this.ingredients = Arrays.toString(ingredientsArray);
     }
 
 
@@ -61,6 +65,14 @@ public class CustomRecipeModel {
         this.instructions = instructions;
     }
 
+    public String getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(String ingredients) {
+        this.ingredients = ingredients;
+    }
+
     @Override
     public String toString() {
         return "CustomRecipeModel{" +
@@ -76,7 +88,7 @@ public class CustomRecipeModel {
         try {
             DBHandler dbHandler = new DBHandler();
             dbHandler.connect();
-            String sql = String.format("INSERT INTO custom_recipes (custom_recipe_label, custom_recipe_calories, custom_recipe_weight, custom_recipe_yield, custom_recipe_instructions) VALUES('%s', %.2f, %.2f, %d, '%s')", getLabel(), getCalories(), getWeight(), getYield(), getInstructions());
+            String sql = String.format("INSERT INTO custom_recipes (custom_recipe_label, custom_recipe_calories, custom_recipe_weight, custom_recipe_yield, custom_recipe_instructions, custom_recipe_ingredients) VALUES('%s', %.2f, %.2f, %d, '%s', '%s')", getLabel(), getCalories(), getWeight(), getYield(), getInstructions(), getIngredients());
             dbHandler.executeUpdate(sql);
             dbHandler.disconnect();
         } catch (SQLException e) {

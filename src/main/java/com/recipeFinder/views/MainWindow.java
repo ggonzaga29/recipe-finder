@@ -2,16 +2,18 @@ package com.recipeFinder.views;
 
 import com.recipeFinder.components.RecipeCard;
 import com.recipeFinder.controllers.CreateRecipeController;
+import com.recipeFinder.controllers.LoginController;
 import com.recipeFinder.utils.Constants;
 import com.recipeFinder.models.RecipeModel;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
-public class MainWindowView extends JFrame {
-    public MainWindowView() {
+public class MainWindow extends JFrame {
+    public MainWindow() {
         setTitle("Main window");
 //        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setIconImage(Constants.STANDARD_ICON);
@@ -149,19 +151,31 @@ public class MainWindowView extends JFrame {
         JPanel panel2 = new JPanel();
         panel2.add(new JLabel("Panel 2"));
 
-        cardPanel.add(jScrollPane, "panel1");
 
         CreateRecipeView createRecipeView = new CreateRecipeView();
         CreateRecipeController createRecipeController = new CreateRecipeController(createRecipeView);
 
+        GroceryListView groceryListView = new GroceryListView();
+
+        cardPanel.add(jScrollPane, "recipe-cards");
         cardPanel.add(createRecipeView, "create-recipes");
+        cardPanel.add(groceryListView, "grocery-list");
 
-        button1.addActionListener(e -> {
-            cardLayout.show(cardPanel, "panel1");
-        });
+        button1.addActionListener(e -> { cardLayout.show(cardPanel, "recipe-cards"); });
+        button2.addActionListener(e -> { cardLayout.show(cardPanel, "create-recipes"); });
+        button5.addActionListener(e -> { cardLayout.show(cardPanel, "grocery-list"); });
+        button3.addActionListener(e -> {
+            SwingUtilities.invokeLater(this::close);
 
-        button2.addActionListener(e -> {
-            cardLayout.show(cardPanel, "create-recipes");
+            LoginView loginView = new LoginView();
+            LoginController loginController = new LoginController(loginView);
+            SwingUtilities.invokeLater(loginView::open);
+
+            loginController.setOnLoginSuccessListener(() -> {
+                SwingUtilities.invokeLater(loginView::close);
+                MainWindow mainWindowView = new MainWindow();
+            });
+
         });
 
         // Create layout for the frame
@@ -195,5 +209,9 @@ public class MainWindowView extends JFrame {
         };
 
         recipeFetcher.execute();
+    }
+
+    public void close() {
+        setVisible(false);
     }
 }
