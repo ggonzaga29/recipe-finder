@@ -4,8 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import com.recipeFinder.lib.Constants;
+
+import com.recipeFinder.utils.Constants;
 
 import com.recipeFinder.components.LinkLabel;
 import com.recipeFinder.controllers.RegistrationController;

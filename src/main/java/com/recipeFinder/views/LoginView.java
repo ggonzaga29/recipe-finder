@@ -4,12 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.util.Objects;
 import java.util.prefs.Preferences;
 
-import com.formdev.flatlaf.FlatLightLaf;
-import com.recipeFinder.lib.Constants;
+import com.recipeFinder.utils.Constants;
 import com.recipeFinder.controllers.LoginController;
 
 import com.recipeFinder.components.LinkLabel;

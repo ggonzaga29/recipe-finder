@@ -1,4 +1,4 @@
-package com.recipeFinder.lib;
+package com.recipeFinder.utils;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatIntelliJLaf;

@@ -1,4 +1,4 @@
-package com.recipeFinder.lib;
+package com.recipeFinder.utils;
 
 import javax.swing.*;
 import java.awt.*;

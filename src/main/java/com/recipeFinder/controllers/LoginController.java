@@ -77,6 +77,10 @@ public class LoginController {
         }
     }
 
+    public void dispose() {
+
+    }
+
     public void setOnLoginSuccessListener(OnLoginSuccessListener listener) {
         this.loginSuccessListener = listener;
     }

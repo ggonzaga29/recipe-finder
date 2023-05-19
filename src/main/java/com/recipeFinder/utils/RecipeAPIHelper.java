@@ -1,4 +1,4 @@
-package com.recipeFinder.lib;
+package com.recipeFinder.utils;
 
 import okhttp3.*;
 import org.json.*;

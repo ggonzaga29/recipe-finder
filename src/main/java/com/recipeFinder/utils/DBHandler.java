@@ -1,6 +1,4 @@
-package com.recipeFinder.lib;
-
-import com.recipeFinder.lib.Constants;
+package com.recipeFinder.utils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

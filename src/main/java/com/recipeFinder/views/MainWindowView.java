@@ -1,31 +1,14 @@
 package com.recipeFinder.views;
 
-import com.recipeFinder.components.ImagePanel;
 import com.recipeFinder.components.RecipeCard;
-import com.recipeFinder.components.SideMenuPanel;
-import com.recipeFinder.lib.Constants;
-import com.recipeFinder.lib.Recipe;
-import com.recipeFinder.lib.RecipeAPIHelper;
-import com.recipeFinder.lib.WrapLayout;
+import com.recipeFinder.controllers.CreateRecipeController;
+import com.recipeFinder.utils.Constants;
 import com.recipeFinder.models.RecipeModel;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.TimerTask;
 
 public class MainWindowView extends JFrame {
     public MainWindowView() {
@@ -167,14 +150,18 @@ public class MainWindowView extends JFrame {
         panel2.add(new JLabel("Panel 2"));
 
         cardPanel.add(jScrollPane, "panel1");
-        cardPanel.add(panel2, "panel2");
+
+        CreateRecipeView createRecipeView = new CreateRecipeView();
+        CreateRecipeController createRecipeController = new CreateRecipeController(createRecipeView);
+
+        cardPanel.add(createRecipeView, "create-recipes");
 
         button1.addActionListener(e -> {
             cardLayout.show(cardPanel, "panel1");
         });
 
         button2.addActionListener(e -> {
-            cardLayout.show(cardPanel, "panel2");
+            cardLayout.show(cardPanel, "create-recipes");
         });
 
         // Create layout for the frame
