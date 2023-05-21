@@ -91,7 +91,7 @@ public class RecipeModel {
         this.ingredientLines = ingredientLines;
     }
 
-    public static ArrayList<RecipeModel> getRecipes(int limit, int offset) {
+    public static ArrayList<RecipeModel> getAll(int limit, int offset) {
         // TODO: Implement the logic to retrieve recipes from the database or API
         // and return them as a list of RecipeModel objects.
 
@@ -137,12 +137,12 @@ public class RecipeModel {
         return null;
     }
 
-    public static ArrayList<RecipeModel> getRecipes() {
-        return getRecipes(20, 0);
+    public static ArrayList<RecipeModel> getAll() {
+        return getAll(20, 0);
     }
 
-    public static ArrayList<RecipeModel> getRecipes(int limit) {
-        return getRecipes(limit, 0);
+    public static ArrayList<RecipeModel> getAll(int limit) {
+        return getAll(limit, 0);
     }
 
     @Override
@@ -164,7 +164,7 @@ public class RecipeModel {
     }
 
     public static void main(String[] args) {
-        ArrayList<RecipeModel> recipes = RecipeModel.getRecipes(40);
+        ArrayList<RecipeModel> recipes = RecipeModel.getAll(40);
 
         for(RecipeModel recipe : recipes) {
             System.out.println(recipe);

@@ -31,7 +31,7 @@ public class CommunityRecipesView extends JPanel {
         SwingWorker<ArrayList<RecipeModel>, Void> recipeFetcher = new SwingWorker<ArrayList<RecipeModel>, Void>() {
             @Override
             protected ArrayList<RecipeModel> doInBackground() throws Exception {
-                return RecipeModel.getRecipes(20);
+                return RecipeModel.getAll(20);
             }
 
             @Override

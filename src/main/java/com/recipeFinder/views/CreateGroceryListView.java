@@ -35,7 +35,7 @@ public class CreateGroceryListView extends JPanel {
         datePicker.setPreferredSize(new Dimension(200, 25));
 
 
-        JButton submitButton = new JButton("Create recipe");
+        JButton submitButton = new JButton("Create Grocery List");
         submitButton.setPreferredSize(new Dimension(300, 40));
         submitButton.setBackground(Color.decode("#2ecc71"));
         submitButton.setForeground(Color.decode("#2c3e50"));

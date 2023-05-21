@@ -71,7 +71,7 @@ public class MainWindow extends JFrame {
         CreateRecipeView createRecipeView = new CreateRecipeView();
         CreateRecipeController createRecipeController = new CreateRecipeController(createRecipeView);
 
-        GroceryListView groceryListView = new GroceryListView();
+        AllGroceryListView groceryListView = new AllGroceryListView();
 
         CreateGroceryListView createGroceryListView = new CreateGroceryListView();
 
@@ -113,7 +113,7 @@ public class MainWindow extends JFrame {
         SwingWorker<ArrayList<RecipeModel>, Void> recipeFetcher = new SwingWorker<ArrayList<RecipeModel>, Void>() {
             @Override
             protected ArrayList<RecipeModel> doInBackground() throws Exception {
-                return RecipeModel.getRecipes(30);
+                return RecipeModel.getAll(30);
             }
 
             @Override

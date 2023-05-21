@@ -10,7 +10,7 @@ import java.sql.Statement;
  * Handles database operations
  * Provides methods to connect to the database, execute SQL statements, and retrieve query results.
  */
-public class DBHandler {
+public class DBHandler implements AutoCloseable {
     private Connection connection;
 
     /**
@@ -68,6 +68,19 @@ public class DBHandler {
                 statement.close();
             }
             throw e;
+        }
+    }
+
+    public Connection getConnection() {
+        return this.connection;
+    }
+
+    @Override
+    public void close() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 }

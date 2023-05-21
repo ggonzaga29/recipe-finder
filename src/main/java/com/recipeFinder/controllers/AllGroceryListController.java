@@ -1,5 +1,5 @@
 package com.recipeFinder.controllers;
 
-public class GroceryListController {
+public class AllGroceryListController {
 
 }

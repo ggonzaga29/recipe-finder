@@ -1,6 +1,6 @@
 package com.recipeFinder.views;
 
-import com.recipeFinder.controllers.GroceryListController;
+import com.recipeFinder.controllers.AllGroceryListController;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -8,10 +8,10 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class GroceryListView extends JPanel {
-    GroceryListController controller;
+public class AllGroceryListView extends JPanel {
+    AllGroceryListController controller;
 
-    public GroceryListView() {
+    public AllGroceryListView() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBorder(new EmptyBorder(0, 40, 0, 40));
         JPanel groceryListsPanel = new JPanel();
