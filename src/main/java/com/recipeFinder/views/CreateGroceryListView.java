@@ -1,19 +1,16 @@
 package com.recipeFinder.views;
 
 import com.github.lgooddatepicker.components.DatePicker;
-import com.github.lgooddatepicker.optionalusertools.CalendarBorderProperties;
 import com.recipeFinder.components.FormControl;
 import com.recipeFinder.controllers.CreateGroceryListController;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.util.Properties;
 
 public class CreateGroceryListView extends JPanel {
     private CreateGroceryListController controller;
     FormControl groceryListTitle;
-    FormControl recipeCalories;
 
     public CreateGroceryListView() {
         JPanel createGroceryListPanel = new JPanel(new FlowLayout(FlowLayout.LEADING, 10, 10));
@@ -26,7 +23,8 @@ public class CreateGroceryListView extends JPanel {
         groceryListTitle.setBorder(new EmptyBorder(0,0,0,0));
 
 
-        GridBagConstraints constraints = new GridBagConstraints();
+        GridBagConstraints constraints;
+        constraints = new GridBagConstraints();
         constraints.insets = new Insets(10, 10, 10, 10);
 
         DatePicker datePicker = new DatePicker();
@@ -51,9 +49,7 @@ public class CreateGroceryListView extends JPanel {
         createGroceryListPanel.add(submitButton);
         add(createGroceryListPanel);
 
-        submitButton.addActionListener(e -> {
-            controller.handleSubmit("SDFds", "ASD");
-        });
+        submitButton.addActionListener(e -> controller.handleSubmit("SDFds", "ASD"));
     }
 
     public void setController(CreateGroceryListController controller) {
