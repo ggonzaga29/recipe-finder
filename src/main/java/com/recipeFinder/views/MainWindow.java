@@ -79,6 +79,8 @@ public class MainWindow extends JFrame {
 
         CreateGroceryListView createGroceryListView = new CreateGroceryListView();
 
+        CreateMealPlanView createMealPlanView = new CreateMealPlanView();
+
         cardPanel.add(jScrollPane, "recipe-cards");
         cardPanel.add(createRecipeView, "create-recipes");
         cardPanel.add(groceryListView, "grocery-list");
