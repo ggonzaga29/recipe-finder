@@ -18,6 +18,8 @@ public class RecipeCard extends JPanel {
     public RecipeCard(RecipeModel recipe) {
         setPreferredSize(new Dimension(330, 220)); // Set preferred size for the card panel
         setLayout(new BorderLayout());
+        setOpaque(true);
+        setBackground(Color.BLUE);
 
         JLabel titleLabel = new JLabel(String.format("<html><h3 style='width: 200px'>%s</h3></html>", recipe.getLabel()));
 //        titleLabel.setHorizontalAlignment(SwingConstants.LEFT);
@@ -53,7 +55,6 @@ public class RecipeCard extends JPanel {
             @Override
             public void mouseEntered(MouseEvent e) {
                 setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-                repaint();
             }
 
             @Override

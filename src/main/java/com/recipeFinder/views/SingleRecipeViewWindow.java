@@ -10,6 +10,8 @@
     import javax.swing.event.HyperlinkEvent;
     import javax.swing.event.HyperlinkListener;
     import java.awt.*;
+    import java.awt.event.MouseAdapter;
+    import java.awt.event.MouseEvent;
     import java.awt.image.BufferedImage;
     import java.io.FileInputStream;
     import java.io.IOException;
@@ -117,13 +119,30 @@
             jScrollPane.getVerticalScrollBar().setUnitIncrement(2);
 
             System.out.println(recipe);
+
+            JButton addToGroceryListButton = new JButton("Add to Grocery List");
+            addToGroceryListButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+            addToGroceryListButton.setMaximumSize(new Dimension(150, 20));
+
+            String week[] = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+            JComboBox<String> groceryLists = new JComboBox<>(week);
+            groceryLists.setAlignmentX(Component.LEFT_ALIGNMENT);
+            groceryLists.setMaximumSize(new Dimension(150, 20));
+
+            addToGroceryListButton.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    super.mouseClicked(e);
+                }
+            });
+
+//            addPanel.add(addToGroceryListButton);
+//            addPanel.add(groceryLists);
+
             panel.add(jScrollPane);
-            panel.add(new JButton("Add to Grocery List"));
-//            panel.add(labelSource);
-//            panel.add(labelCalories);
-//            panel.add(labelTotalTime);
-//            panel.add(labelYield);
-            // Add more JLabels to the panel
+            panel.add(Box.createVerticalStrut(30));
+            panel.add(addToGroceryListButton);
+            panel.add(groceryLists);
 
             getContentPane().add(panel);
             setVisible(true);

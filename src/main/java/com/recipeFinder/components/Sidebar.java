@@ -13,6 +13,7 @@ public class Sidebar extends JPanel {
     public JButton createRecipeButton;
     public JButton favoritesButton;
     public JButton groceryListButton;
+    public JButton createGroceryListButton;
     public JButton logoutButton;
 
     /**
@@ -31,11 +32,13 @@ public class Sidebar extends JPanel {
         logoutButton = createSidebarButton("Logout", "src/main/resources/arrow-right-solid.png");
         favoritesButton = createSidebarButton("Favorites", "src/main/resources/heart-solid.png");
         groceryListButton = createSidebarButton("Grocery List", "src/main/resources/shopping-cart-solid.png");
+        createGroceryListButton = createSidebarButton("Create Grocery List", "src/main/resources/cart-plus-solid.png");
 
         add(homeButton);
         add(createRecipeButton);
         add(favoritesButton);
         add(groceryListButton);
+        add(createGroceryListButton);
         add(Box.createVerticalGlue()); // Vertical glue to fill the remaining space
         add(logoutButton);
     }

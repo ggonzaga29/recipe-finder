@@ -12,11 +12,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class CreateRecipeView extends JPanel {
-    CreateRecipeController controller;
-    FormControl recipeName;
-    FormControl recipeCalories;
-    FormControl recipeWeight;
-    FormControl recipeYield;
+    private CreateRecipeController controller;
+    private FormControl recipeName;
+    private FormControl recipeCalories;
+    private FormControl recipeWeight;
+    private FormControl recipeYield;
 
     public CreateRecipeView() {
 
@@ -37,9 +37,8 @@ public class CreateRecipeView extends JPanel {
         recipeYield = new FormControl("Recipe Yield");
         recipeYield.lockInt();
 
-//        JPanel textAreaPanel = new JPanel();
         GridBagConstraints constraints = new GridBagConstraints();
-        constraints.insets = new Insets(10, 10, 10, 10);
+        constraints.insets = new Insets(10, 0, 10, 0);
 
         JPanel ingredientsControl = new JPanel(new GridBagLayout());
         JLabel ingredientsLabel = new JLabel("Ingredients *");
@@ -80,7 +79,7 @@ public class CreateRecipeView extends JPanel {
 
         constraints.gridx = 0;
         constraints.gridy = 2;
-        constraints.insets = new Insets(20, 10, 0, 0);
+        constraints.insets = new Insets(20, 0, 0, 0);
         ingredientsControl.add(submitButton, constraints);
 
         submitButton.addMouseListener(new MouseAdapter() {

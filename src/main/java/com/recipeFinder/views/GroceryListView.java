@@ -28,7 +28,7 @@ public class GroceryListView extends JPanel {
 
         JButton createGroceryListButton = new JButton("Create Grocery List");
         createGroceryListButton.setAlignmentX(Component.LEFT_ALIGNMENT); // Set alignment to the left
-        add(createGroceryListButton);
+//        add(createGroceryListButton);
     }
 
     protected JPanel createGroceryListPanel(String label, String date) {

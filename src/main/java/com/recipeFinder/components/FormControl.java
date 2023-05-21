@@ -25,19 +25,19 @@ public class FormControl extends JPanel {
         setLayout(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
 
-        constraints.insets = new Insets(10, 10, 10, 10);
+        constraints.insets = new Insets(10, 0, 10, 0);
 
         inputLabel = new JLabel();
         constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.anchor = GridBagConstraints.LINE_START;
-        constraints.insets = new Insets(10, 10, -2, 10);
+        constraints.insets = new Insets(10, 0, -2, 0);
         add(inputLabel, constraints);
 
         input = new JTextField();
         constraints.gridx = 0;
         constraints.gridy = 1;
-        constraints.insets = new Insets(10, 10,   10, 10);
+        constraints.insets = new Insets(10, 0,   10, 0);
         add(input, constraints);
     }
 

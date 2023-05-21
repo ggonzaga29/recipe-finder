@@ -24,5 +24,9 @@ public class Constants {
         }
     }
 
+    public static class Colors {
+        public static Color PRIMARY = Color.decode("#eeeeee");
+    }
+
 
 }
