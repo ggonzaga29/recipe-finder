@@ -1,8 +1,12 @@
 package com.recipeFinder.utils;
 
+import org.apache.maven.model.Model;
+import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 
 public class Constants {
@@ -22,6 +26,18 @@ public class Constants {
         } catch (IOException | FontFormatException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static String VERSION_NUMBER() {
+        try {
+            MavenXpp3Reader reader = new MavenXpp3Reader();
+            Model model = reader.read(new FileReader("pom.xml"));
+            return model.getVersion();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     public static class Colors {

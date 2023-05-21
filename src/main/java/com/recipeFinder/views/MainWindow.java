@@ -3,6 +3,7 @@ package com.recipeFinder.views;
 import com.recipeFinder.components.Navbar;
 import com.recipeFinder.components.RecipeCard;
 import com.recipeFinder.components.Sidebar;
+import com.recipeFinder.controllers.CreateMealPlanController;
 import com.recipeFinder.controllers.CreateRecipeController;
 import com.recipeFinder.controllers.LoginController;
 import com.recipeFinder.utils.Constants;
@@ -11,7 +12,6 @@ import com.recipeFinder.models.RecipeModel;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 /**
@@ -20,7 +20,7 @@ import java.util.ArrayList;
  */
 public class MainWindow extends JFrame {
     public MainWindow() {
-        setTitle("Flavor Finder 1.0.0");
+        setTitle("Flavor Finder " + Constants.VERSION_NUMBER());
         setIconImage(Constants.STANDARD_ICON);
         setSize(1250, 768);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -31,8 +31,6 @@ public class MainWindow extends JFrame {
         Sidebar sidebar = new Sidebar();
 
         JPanel mainContentPanel = new JPanel();
-//        mainContentPanel.setOpaque(false);
-//        mainContentPanel.setBackground();
         mainContentPanel.setLayout(new BorderLayout());
 
         navbar.menuButton.addActionListener(e -> {
@@ -45,7 +43,6 @@ public class MainWindow extends JFrame {
 
         CardLayout cardLayout = new CardLayout();
         JPanel cardPanel = new JPanel();
-//        cardPanel.setBackground(Color.decode("#18191a"));
         cardPanel.setLayout(cardLayout);
         mainContentPanel.add(cardPanel);
 
@@ -55,7 +52,6 @@ public class MainWindow extends JFrame {
         JPanel recipeCardsPanel = new JPanel();
         recipeCardsPanel.setLayout(new FlowLayout(FlowLayout.LEADING, 10, 10));
         recipeCardsPanel.setPreferredSize(new Dimension(recipePanel.getWidth(), Integer.MAX_VALUE));
-//        recipeCardsPanel.setBackground(Color.decode("#636567"));
 
         JPanel recipeSearchPanel = new JPanel();
         JTextField recipeSearchInput = new JTextField();
@@ -80,16 +76,19 @@ public class MainWindow extends JFrame {
         CreateGroceryListView createGroceryListView = new CreateGroceryListView();
 
         CreateMealPlanView createMealPlanView = new CreateMealPlanView();
+        CreateMealPlanController createMealPlanController = new CreateMealPlanController(createMealPlanView);
 
         cardPanel.add(jScrollPane, "recipe-cards");
         cardPanel.add(createRecipeView, "create-recipes");
         cardPanel.add(groceryListView, "grocery-list");
         cardPanel.add(createGroceryListView, "create-grocery-list");
+        cardPanel.add(createMealPlanView, "create-meal-plan");
 
-        sidebar.homeButton.addActionListener(e -> { cardLayout.show(cardPanel, "recipe-cards"); });
-        sidebar.createRecipeButton.addActionListener(e -> { cardLayout.show(cardPanel, "create-recipes"); });
-        sidebar.groceryListButton.addActionListener(e -> { cardLayout.show(cardPanel, "grocery-list"); });
-        sidebar.createGroceryListButton.addActionListener(e -> { cardLayout.show(cardPanel, "create-grocery-list"); });
+        sidebar.homeButton.addActionListener(e -> cardLayout.show(cardPanel, "recipe-cards"));
+        sidebar.createRecipeButton.addActionListener(e -> cardLayout.show(cardPanel, "create-recipes"));
+        sidebar.groceryListButton.addActionListener(e -> cardLayout.show(cardPanel, "grocery-list"));
+        sidebar.createGroceryListButton.addActionListener(e -> cardLayout.show(cardPanel, "create-grocery-list"));
+        sidebar.createMealPlanButton.addActionListener(e -> cardLayout.show(cardPanel, "create-meal-plan"));
 
         sidebar.logoutButton.addActionListener(e -> {
             SwingUtilities.invokeLater(this::close);
