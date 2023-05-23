@@ -1,4 +1,4 @@
-package com.recipeFinder.controllers;
+package com.recipeFinder.controllers.MealPlan;
 
 import com.recipeFinder.views.MealPlan.CreateMealPlanView;
 

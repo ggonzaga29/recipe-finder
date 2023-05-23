@@ -1,2 +1,5 @@
-package com.recipeFinder.interfaces;public interface EventListener {
+package com.recipeFinder.interfaces;
+
+public interface EventListener {
+    void onEvent(String eventName);
 }

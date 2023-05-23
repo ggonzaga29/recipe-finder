@@ -1,4 +1,4 @@
-package com.recipeFinder.views;
+package com.recipeFinder.views.Auth;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,7 +8,7 @@ import java.awt.event.MouseEvent;
 import com.recipeFinder.utils.Constants;
 
 import com.recipeFinder.components.LinkLabel;
-import com.recipeFinder.controllers.RegistrationController;
+import com.recipeFinder.controllers.Auth.RegistrationController;
 
 public class RegistrationView extends JFrame {
     private JTextField usernameField;

@@ -1,11 +1,10 @@
 package com.recipeFinder.components;
 
 import com.recipeFinder.models.RecipeModel;
-import com.recipeFinder.views.SingleRecipeViewWindow;
+import com.recipeFinder.views.Recipes.SingleRecipeViewWindow;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;

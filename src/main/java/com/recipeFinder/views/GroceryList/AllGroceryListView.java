@@ -1,34 +1,53 @@
-package com.recipeFinder.views;
+package com.recipeFinder.views.GroceryList;
 
-import com.recipeFinder.controllers.AllGroceryListController;
+import com.recipeFinder.controllers.GroceryList.AllGroceryListController;
+import com.recipeFinder.models.GroceryListModel;
+import com.recipeFinder.views.View;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
-public class AllGroceryListView extends JPanel {
+public class AllGroceryListView extends View {
     AllGroceryListController controller;
+    JPanel groceryListsPanel;
 
     public AllGroceryListView() {
+        initComponents();
+    }
+
+    public void initComponents() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBorder(new EmptyBorder(0, 40, 0, 40));
-        JPanel groceryListsPanel = new JPanel();
+        groceryListsPanel = new JPanel();
         groceryListsPanel.setLayout(new BoxLayout(groceryListsPanel, BoxLayout.Y_AXIS));
+        JScrollPane groceryListsScrollPane = new JScrollPane(groceryListsPanel);
+        groceryListsScrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 
         add(new JLabel("<html><h1>Grocery Lists</h1></html>"));
 
-        groceryListsPanel.add(createGroceryListPanel("Dinner", "05/08/2002"));
-        groceryListsPanel.add(Box.createVerticalStrut(10));
-        groceryListsPanel.add(createGroceryListPanel("Dinner", "05/08/2002"));
-        groceryListsPanel.add(Box.createVerticalStrut(10));
-        groceryListsPanel.add(createGroceryListPanel("Dinner", "05/08/2002"));
-        add(groceryListsPanel);
+        add(groceryListsScrollPane);
 
         JButton createGroceryListButton = new JButton("Create Grocery List");
         createGroceryListButton.setAlignmentX(Component.LEFT_ALIGNMENT); // Set alignment to the left
-//        add(createGroceryListButton);
+    }
+
+    public void updateView(ArrayList<GroceryListModel> groceryListModels) {
+        SwingUtilities.invokeLater(() -> {
+            groceryListsPanel.removeAll();
+
+            for (GroceryListModel groceryListModel : groceryListModels) {
+                groceryListsPanel.add(createGroceryListPanel(groceryListModel.getName(), groceryListModel.getDate()));
+                groceryListsPanel.add(Box.createVerticalStrut(10));
+            }
+
+            groceryListsPanel.revalidate();
+            groceryListsPanel.repaint();
+        });
+
     }
 
     protected JPanel createGroceryListPanel(String label, String date) {

@@ -1,9 +1,7 @@
-package com.recipeFinder.views;
+package com.recipeFinder.views.Recipes;
 
-import com.formdev.flatlaf.FlatLaf;
-import com.formdev.flatlaf.FlatLightLaf;
 import com.recipeFinder.components.FormControl;
-import com.recipeFinder.controllers.CreateRecipeController;
+import com.recipeFinder.controllers.Recipes.CreateRecipeController;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

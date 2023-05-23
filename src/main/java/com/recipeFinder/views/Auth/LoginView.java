@@ -1,13 +1,12 @@
-package com.recipeFinder.views;
+package com.recipeFinder.views.Auth;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.prefs.Preferences;
 
 import com.recipeFinder.utils.Constants;
-import com.recipeFinder.controllers.LoginController;
+import com.recipeFinder.controllers.Auth.LoginController;
 
 import com.recipeFinder.components.LinkLabel;
 
@@ -21,8 +20,6 @@ public class LoginView extends JFrame {
     private LoginController controller;
     private JPanel mainPanel;
 
-    Preferences preferences;
-
     public LoginView() {
         mainPanel = createMainPanel();
         getContentPane().add(mainPanel);
@@ -30,14 +27,6 @@ public class LoginView extends JFrame {
 
     public void setController(LoginController controller) {
         this.controller = controller;
-    }
-
-    public void updateView() {
-
-    }
-
-    public JPanel getMainPanel() {
-        return mainPanel;
     }
 
     protected JPanel createMainPanel() {
@@ -48,7 +37,6 @@ public class LoginView extends JFrame {
         setSize(350, 600);
         setResizable(false);
         setLocationRelativeTo(null);
-//        setDefaultLookAndFeelDecorated(true);
 
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();

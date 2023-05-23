@@ -1,4 +1,4 @@
-package com.recipeFinder.controllers;
+package com.recipeFinder.controllers.Recipes;
 
 import com.recipeFinder.models.CustomRecipeModel;
 import com.recipeFinder.views.Recipes.CreateRecipeView;

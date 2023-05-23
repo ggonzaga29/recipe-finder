@@ -7,6 +7,8 @@ import com.recipeFinder.utils.DBHandler;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 
 public class GroceryListModel {
     private int id;
@@ -49,28 +51,47 @@ public class GroceryListModel {
                 '}';
     }
 
+    public static ArrayList<GroceryListModel> getAll() {
+        try (DBHandler db = new DBHandler()) {
+            db.connect();
+
+            ArrayList<GroceryListModel> groceryListModels = new ArrayList<GroceryListModel>();
+
+            String sql = "SELECT * FROM grocery_lists";
+            try (ResultSet resultSet = db.executeQuery(sql)) {
+                while (resultSet.next()) {
+                    int id = resultSet.getInt("grocery_list_id");
+                    String name = resultSet.getString("grocery_list_name");
+                    String date = resultSet.getString("grocery_list_date");
+
+                    GroceryListModel groceryListModel = new GroceryListModel(id, name, date);
+                    groceryListModels.add(groceryListModel);
+                }
+            }
+
+            return groceryListModels;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public SQLResult save() {
         try (DBHandler db = new DBHandler()) {
             db.connect();
 
-            String sql = "SELECT COUNT(*) FROM grocery_lists WHERE grocery_list_name = ?";
-            try (PreparedStatement statement = db.getConnection().prepareStatement(sql)) {
-                statement.setString(1, name);
-                try (ResultSet resultSet = statement.executeQuery()) {
-                    resultSet.next();
-                    int count = resultSet.getInt(1);
+            String sql = "SELECT COUNT(*) FROM grocery_lists WHERE grocery_list_name = '" + name + "'";
+            try (ResultSet resultSet = db.executeQuery(sql)) {
+                resultSet.next();
+                int count = resultSet.getInt(1);
 
-                    if (count > 0) {
-                        throw new RecordAlreadyExistsException("Record already exists. Cannot insert.");
-                    }
+                if (count > 0) {
+                    throw new RecordAlreadyExistsException("Record already exists. Cannot insert.");
                 }
             }
 
-            sql = "INSERT INTO grocery_lists (grocery_list_name, grocery_list_date) VALUES (?, ?)";
-            try (PreparedStatement statement = db.getConnection().prepareStatement(sql)) {
-                statement.setString(1, getName());
-                statement.setString(2, getDate());
-                int rowsAffected = statement.executeUpdate();
+            sql = "INSERT INTO grocery_lists (grocery_list_name, grocery_list_date) VALUES ('" + getName() + "', '" + getDate() + "')";
+            try (Statement statement = db.getConnection().createStatement()) {
+                int rowsAffected = statement.executeUpdate(sql);
 
                 if (rowsAffected > 0) {
                     return SQLResult.SUCCESS;

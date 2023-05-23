@@ -1,6 +1,7 @@
-package com.recipeFinder.controllers;
+package com.recipeFinder.controllers.Auth;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
+import com.recipeFinder.controllers.Auth.LoginController;
 import com.recipeFinder.models.UserModel;
 import com.recipeFinder.views.Auth.LoginView;
 import com.recipeFinder.views.MainWindow;

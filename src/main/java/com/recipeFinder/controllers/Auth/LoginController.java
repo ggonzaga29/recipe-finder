@@ -1,4 +1,4 @@
-package com.recipeFinder.controllers;
+package com.recipeFinder.controllers.Auth;
 
 import javax.swing.*;
 import java.sql.SQLException;
@@ -6,6 +6,7 @@ import java.util.prefs.Preferences;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
+import com.recipeFinder.controllers.Controller;
 import com.recipeFinder.models.UserModel;
 import com.recipeFinder.views.Auth.LoginView;
 import com.recipeFinder.views.Auth.RegistrationView;

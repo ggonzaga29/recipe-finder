@@ -1,4 +1,4 @@
-package com.recipeFinder.views;
+package com.recipeFinder.views.Recipes;
 
 import com.recipeFinder.components.RecipeCard;
 import com.recipeFinder.models.RecipeModel;

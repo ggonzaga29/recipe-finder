@@ -1,8 +1,9 @@
-package com.recipeFinder.views;
+package com.recipeFinder.views.GroceryList;
 
 import com.github.lgooddatepicker.components.DatePicker;
 import com.recipeFinder.components.FormControl;
-import com.recipeFinder.controllers.CreateGroceryListController;
+import com.recipeFinder.controllers.GroceryList.CreateGroceryListController;
+import com.recipeFinder.views.View;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -21,7 +22,6 @@ public class CreateGroceryListView extends View {
 
         groceryListTitle = new FormControl("Grocery List Name *");
         groceryListTitle.setBorder(new EmptyBorder(0,0,0,0));
-
 
         GridBagConstraints constraints;
         constraints = new GridBagConstraints();

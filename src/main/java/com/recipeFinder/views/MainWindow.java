@@ -3,11 +3,18 @@ package com.recipeFinder.views;
 import com.recipeFinder.components.Navbar;
 import com.recipeFinder.components.RecipeCard;
 import com.recipeFinder.components.Sidebar;
-import com.recipeFinder.controllers.CreateMealPlanController;
-import com.recipeFinder.controllers.CreateRecipeController;
-import com.recipeFinder.controllers.LoginController;
+import com.recipeFinder.controllers.GroceryList.AllGroceryListController;
+import com.recipeFinder.controllers.GroceryList.CreateGroceryListController;
+import com.recipeFinder.controllers.MealPlan.CreateMealPlanController;
+import com.recipeFinder.controllers.Recipes.CreateRecipeController;
+import com.recipeFinder.controllers.Auth.LoginController;
 import com.recipeFinder.utils.Constants;
 import com.recipeFinder.models.RecipeModel;
+import com.recipeFinder.views.Auth.LoginView;
+import com.recipeFinder.views.GroceryList.AllGroceryListView;
+import com.recipeFinder.views.GroceryList.CreateGroceryListView;
+import com.recipeFinder.views.MealPlan.CreateMealPlanView;
+import com.recipeFinder.views.Recipes.CreateRecipeView;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -68,12 +75,15 @@ public class MainWindow extends JFrame {
         jScrollPane.setPreferredSize(new Dimension(recipeCardsPanel.getWidth(), Integer.MAX_VALUE));
         jScrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 
+        // Initialize MVC Components
         CreateRecipeView createRecipeView = new CreateRecipeView();
         CreateRecipeController createRecipeController = new CreateRecipeController(createRecipeView);
 
         AllGroceryListView groceryListView = new AllGroceryListView();
+        AllGroceryListController allGroceryListController = new AllGroceryListController(groceryListView);
 
         CreateGroceryListView createGroceryListView = new CreateGroceryListView();
+        CreateGroceryListController createGroceryListController = new CreateGroceryListController(createGroceryListView);
 
         CreateMealPlanView createMealPlanView = new CreateMealPlanView();
         CreateMealPlanController createMealPlanController = new CreateMealPlanController(createMealPlanView);
@@ -89,7 +99,6 @@ public class MainWindow extends JFrame {
         sidebar.groceryListButton.addActionListener(e -> cardLayout.show(cardPanel, "grocery-list"));
         sidebar.createGroceryListButton.addActionListener(e -> cardLayout.show(cardPanel, "create-grocery-list"));
         sidebar.createMealPlanButton.addActionListener(e -> cardLayout.show(cardPanel, "create-meal-plan"));
-
         sidebar.logoutButton.addActionListener(e -> {
             SwingUtilities.invokeLater(this::close);
 
@@ -97,12 +106,18 @@ public class MainWindow extends JFrame {
             LoginController loginController = new LoginController(loginView);
             SwingUtilities.invokeLater(loginView::open);
 
-            loginController.setOnLoginSuccessListener(() -> {
+            loginController.on("submit_success", (Void) -> {
                 SwingUtilities.invokeLater(loginView::close);
                 MainWindow mainWindowView = new MainWindow();
             });
 
         });
+
+        createGroceryListController.on("submit", (Void) -> SwingUtilities.invokeLater(() -> {
+            createGroceryListView.clearInputs();
+            allGroceryListController.viewGroceryListItems();
+            cardLayout.show(cardPanel, "grocery-list");
+        }));
 
         setLayout(new BorderLayout());
         add(navbar, BorderLayout.NORTH);
@@ -110,9 +125,9 @@ public class MainWindow extends JFrame {
         add(mainContentPanel, BorderLayout.CENTER);
         setVisible(true);
 
-        SwingWorker<ArrayList<RecipeModel>, Void> recipeFetcher = new SwingWorker<ArrayList<RecipeModel>, Void>() {
+        SwingWorker<ArrayList<RecipeModel>, Void> recipeFetcher = new SwingWorker<>() {
             @Override
-            protected ArrayList<RecipeModel> doInBackground() throws Exception {
+            protected ArrayList<RecipeModel> doInBackground() {
                 return RecipeModel.getAll(30);
             }
 

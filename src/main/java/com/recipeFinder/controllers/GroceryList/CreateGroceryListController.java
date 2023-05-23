@@ -1,5 +1,6 @@
-package com.recipeFinder.controllers;
+package com.recipeFinder.controllers.GroceryList;
 
+import com.recipeFinder.controllers.Controller;
 import com.recipeFinder.enums.SQLResult;
 import com.recipeFinder.models.GroceryListModel;
 import com.recipeFinder.views.GroceryList.CreateGroceryListView;

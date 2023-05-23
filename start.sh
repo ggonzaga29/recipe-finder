@@ -1,7 +1,6 @@
 #!/bin/bash
 
 WRAPPER_PATH="./.mvn/wrapper"
-export PATH="$WRAPPER_PATH:$PATH"
 
 if [ ! -f "$WRAPPER_PATH/maven-wrapper.jar" ]; then
     echo "Maven wrapper not found. Please make sure the Maven wrapper is set up in your project."

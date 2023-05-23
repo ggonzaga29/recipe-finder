@@ -1,2 +1,4 @@
-package com.recipeFinder.models;public class _BaseModel {
+package com.recipeFinder.models;
+
+public class _BaseModel {
 }
