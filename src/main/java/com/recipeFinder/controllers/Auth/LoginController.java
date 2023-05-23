@@ -7,10 +7,10 @@ import java.util.prefs.Preferences;
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
 import com.recipeFinder.models.UserModel;
-import com.recipeFinder.views.LoginView;
-import com.recipeFinder.views.RegistrationView;
+import com.recipeFinder.views.Auth.LoginView;
+import com.recipeFinder.views.Auth.RegistrationView;
 
-public class LoginController {
+public class LoginController extends Controller {
     private final LoginView view;
     private final Preferences preferences;
 
@@ -68,9 +68,7 @@ public class LoginController {
 
             BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), model.getPassword());
             if (result.verified) {
-                if (loginSuccessListener != null) {
-                    loginSuccessListener.onLoginSuccess();
-                }
+                emit("submit_success");
             }
         } catch (SQLException err) {
             err.printStackTrace();
@@ -79,10 +77,6 @@ public class LoginController {
 
     public void dispose() {
 
-    }
-
-    public void setOnLoginSuccessListener(OnLoginSuccessListener listener) {
-        this.loginSuccessListener = listener;
     }
 
     public interface OnLoginSuccessListener {

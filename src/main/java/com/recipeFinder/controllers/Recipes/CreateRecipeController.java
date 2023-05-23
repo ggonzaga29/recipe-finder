@@ -1,7 +1,7 @@
 package com.recipeFinder.controllers;
 
 import com.recipeFinder.models.CustomRecipeModel;
-import com.recipeFinder.views.CreateRecipeView;
+import com.recipeFinder.views.Recipes.CreateRecipeView;
 
 public class CreateRecipeController {
     private CreateRecipeView view;

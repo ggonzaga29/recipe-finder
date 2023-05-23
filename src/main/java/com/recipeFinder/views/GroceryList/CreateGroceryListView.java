@@ -8,7 +8,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 
-public class CreateGroceryListView extends JPanel {
+public class CreateGroceryListView extends View {
     private CreateGroceryListController controller;
     FormControl groceryListTitle;
 
@@ -28,12 +28,9 @@ public class CreateGroceryListView extends JPanel {
         constraints.insets = new Insets(10, 10, 10, 10);
 
         DatePicker datePicker = new DatePicker();
-
         datePicker.setDateToToday(); // Set the initial date to today
         datePicker.getComponentToggleCalendarButton().setText("Select Date"); // Set the button text
-
         datePicker.setPreferredSize(new Dimension(200, 25));
-
 
         JButton submitButton = new JButton("Create Grocery List");
         submitButton.setPreferredSize(new Dimension(300, 40));
@@ -49,7 +46,7 @@ public class CreateGroceryListView extends JPanel {
         createGroceryListPanel.add(submitButton);
         add(createGroceryListPanel);
 
-        submitButton.addActionListener(e -> controller.handleSubmit("SDFds", "ASD"));
+        submitButton.addActionListener(e -> controller.handleSubmit(groceryListTitle.getText(), datePicker.getText()));
     }
 
     public void setController(CreateGroceryListController controller) {

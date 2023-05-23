@@ -1,7 +1,6 @@
 package com.recipeFinder.controllers;
 
-import com.recipeFinder.interfaces.IController;
-import com.recipeFinder.views.CreateMealPlanView;
+import com.recipeFinder.views.MealPlan.CreateMealPlanView;
 
 public class CreateMealPlanController {
     private CreateMealPlanView view;

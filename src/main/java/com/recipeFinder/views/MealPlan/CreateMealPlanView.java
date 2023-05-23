@@ -1,8 +1,6 @@
 package com.recipeFinder.views;
 
 import com.recipeFinder.controllers.CreateMealPlanController;
-import com.recipeFinder.interfaces.IController;
-import com.recipeFinder.interfaces.IView;
 
 import javax.swing.*;
 

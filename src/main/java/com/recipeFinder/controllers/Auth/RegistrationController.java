@@ -2,14 +2,12 @@ package com.recipeFinder.controllers;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.recipeFinder.models.UserModel;
-import com.recipeFinder.views.LoginView;
+import com.recipeFinder.views.Auth.LoginView;
 import com.recipeFinder.views.MainWindow;
-import com.recipeFinder.views.RegistrationView;
+import com.recipeFinder.views.Auth.RegistrationView;
 
 import javax.swing.*;
 import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.prefs.Preferences;
 
 public class RegistrationController {
     private final RegistrationView view;
@@ -25,7 +23,7 @@ public class RegistrationController {
         LoginController loginController = new LoginController(loginView);
         SwingUtilities.invokeLater(loginView::open);
 
-        loginController.setOnLoginSuccessListener(() -> {
+        loginController.on("submit_success", (Void) -> {
             SwingUtilities.invokeLater(loginView::close);
             MainWindow mainWindowView = new MainWindow();
         });
