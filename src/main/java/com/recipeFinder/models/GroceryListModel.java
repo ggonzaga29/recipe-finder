@@ -1,10 +1,9 @@
 package com.recipeFinder.models;
 
-import com.recipeFinder.enums.SQLResult;
-import com.recipeFinder.exceptions.RecordAlreadyExistsException;
-import com.recipeFinder.utils.DBHandler;
+import com.recipeFinder.shared.enums.SQLResult;
+import com.recipeFinder.shared.exceptions.RecordAlreadyExistsException;
+import com.recipeFinder.shared.utils.DBHandler;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;

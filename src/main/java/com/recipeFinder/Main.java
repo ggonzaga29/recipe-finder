@@ -1,10 +1,9 @@
 package com.recipeFinder;
 
-import com.recipeFinder.controllers.Auth.LoginController;
-import com.recipeFinder.utils.Theme;
+import com.recipeFinder.features.Auth.LoginController;
+import com.recipeFinder.shared.utils.Theme;
 
-import com.recipeFinder.views.*;
-import com.recipeFinder.views.Auth.LoginView;
+import com.recipeFinder.features.Auth.LoginView;
 
 import javax.swing.*;
 

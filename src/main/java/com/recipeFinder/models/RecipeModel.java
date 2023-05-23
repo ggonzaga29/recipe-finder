@@ -3,7 +3,7 @@ package com.recipeFinder.models;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import com.recipeFinder.utils.DBHandler;
+import com.recipeFinder.shared.utils.DBHandler;
 
 public class RecipeModel {
     private int recipe_id;

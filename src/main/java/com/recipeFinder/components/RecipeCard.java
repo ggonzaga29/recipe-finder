@@ -1,7 +1,7 @@
 package com.recipeFinder.components;
 
 import com.recipeFinder.models.RecipeModel;
-import com.recipeFinder.views.Recipes.SingleRecipeViewWindow;
+import com.recipeFinder.features.Recipe.SingleRecipeViewWindow;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

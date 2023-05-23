@@ -1,6 +1,6 @@
 package com.recipeFinder.models;
 
-import com.recipeFinder.utils.DBHandler;
+import com.recipeFinder.shared.utils.DBHandler;
 
 import java.sql.SQLException;
 import java.util.Arrays;
