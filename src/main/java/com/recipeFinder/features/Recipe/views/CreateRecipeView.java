@@ -1,6 +1,7 @@
-package com.recipeFinder.features.Recipe;
+package com.recipeFinder.features.Recipe.views;
 
 import com.recipeFinder.components.FormControl;
+import com.recipeFinder.features.Recipe.controllers.CreateRecipeController;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

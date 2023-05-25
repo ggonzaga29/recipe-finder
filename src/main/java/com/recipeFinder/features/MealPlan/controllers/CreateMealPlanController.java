@@ -1,6 +1,6 @@
-package com.recipeFinder.features.MealPlan;
+package com.recipeFinder.features.MealPlan.controllers;
 
-import com.recipeFinder.features.MealPlan.CreateMealPlanView;
+import com.recipeFinder.features.MealPlan.views.CreateMealPlanView;
 
 public class CreateMealPlanController {
     private CreateMealPlanView view;

@@ -1,5 +1,6 @@
 #!/bin/bash
 
+PROCESS_NAME="FlavorFinder"
 WRAPPER_PATH="./.mvn/wrapper"
 
 if [ ! -f "$WRAPPER_PATH/maven-wrapper.jar" ]; then
@@ -7,5 +8,4 @@ if [ ! -f "$WRAPPER_PATH/maven-wrapper.jar" ]; then
     exit 1
 fi
 
-mvn package
-./mvnw exec:java -Dexec.mainClass=com.recipeFinder.Main
+exec ./mvnw exec:java -Dexec.mainClass=com.recipeFinder.Main

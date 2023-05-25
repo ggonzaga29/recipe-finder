@@ -1,4 +1,4 @@
-package com.recipeFinder.features.GroceryList;
+package com.recipeFinder.features.GroceryList.views;
 
 import com.recipeFinder.features.View;
 

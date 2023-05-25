@@ -1,10 +1,11 @@
-package com.recipeFinder.features.Auth;
+package com.recipeFinder.features.Auth.views;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import com.recipeFinder.features.Auth.controllers.LoginController;
 import com.recipeFinder.shared.utils.Constants;
 
 import com.recipeFinder.components.LinkLabel;
@@ -146,8 +147,9 @@ public class LoginView extends JFrame {
     }
 
     public void open() {
-        this.setVisible(true);
+        setVisible(true);
     }
+
 
     public void close() {
         this.setVisible(false);

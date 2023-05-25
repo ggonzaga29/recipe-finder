@@ -1,4 +1,4 @@
-package com.recipeFinder.features.Auth;
+package com.recipeFinder.features.Auth.controllers;
 
 import javax.swing.*;
 import java.sql.SQLException;
@@ -6,8 +6,10 @@ import java.util.prefs.Preferences;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
+import com.recipeFinder.features.Auth.models.User;
+import com.recipeFinder.features.Auth.views.LoginView;
+import com.recipeFinder.features.Auth.views.RegistrationView;
 import com.recipeFinder.features.Controller;
-import com.recipeFinder.models.UserModel;
 
 public class LoginController extends Controller {
     private final LoginView view;
@@ -15,22 +17,10 @@ public class LoginController extends Controller {
 
     private OnLoginSuccessListener loginSuccessListener;
 
-
     public LoginController(LoginView view) {
         preferences = Preferences.userNodeForPackage(getClass());
-
         this.view = view;
         view.setController(this);
-
-        boolean rememberMe = preferences.getBoolean("rememberMe", false);
-        if (rememberMe) {
-            view.setRememberMeCheckbox(true);
-            String storedUsername = preferences.get("username", null);
-            view.setUsernameField(storedUsername);
-            SwingUtilities.invokeLater(() -> {
-                view.getPasswordField().grabFocus();
-            });
-        }
     }
 
     public void redirectToRegistration() {
@@ -48,16 +38,8 @@ public class LoginController extends Controller {
 
         String usernameTrimmed = username.trim();
 
-        if (view.getRememberMe()) {
-            preferences.putBoolean("rememberMe", true);
-            preferences.put("username", usernameTrimmed);
-        } else {
-            preferences.putBoolean("rememberMe", false);
-            preferences.remove("username");
-        }
-
         try {
-            UserModel model = UserModel.findByUsername(usernameTrimmed);
+            User model = User.findByUsername(usernameTrimmed);
 
             if (model == null) {
                 // dont print "User not found" for security reasons
@@ -67,6 +49,14 @@ public class LoginController extends Controller {
 
             BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), model.getPassword());
             if (result.verified) {
+                if (view.getRememberMe()) {
+                    preferences.putBoolean("rememberMe", true);
+                    preferences.put("username", usernameTrimmed);
+                } else {
+                    preferences.putBoolean("rememberMe", false);
+                    preferences.remove("username");
+                }
+
                 emit("submit_success");
             }
         } catch (SQLException err) {

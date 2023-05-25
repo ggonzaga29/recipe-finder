@@ -1,4 +1,4 @@
-package com.recipeFinder.features.Recipe;
+package com.recipeFinder.features.Recipe.views;
 
 import com.recipeFinder.components.ImagePanel;
 import com.recipeFinder.shared.utils.Constants;

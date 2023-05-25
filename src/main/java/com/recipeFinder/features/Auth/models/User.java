@@ -1,27 +1,28 @@
-package com.recipeFinder.models;
+package com.recipeFinder.features.Auth.models;
 
 import com.recipeFinder.shared.utils.DBHandler;
 
+import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class UserModel {
+public class User implements Serializable {
     private int userID;
     private String username;
     private String password;
 
-    public UserModel(int id, String name, String password) {
+    public User(int id, String name, String password) {
         this.userID = id;
         this.username = name;
         this.password = password;
     }
 
-    public UserModel(String name, String password) {
+    public User(String name, String password) {
         this.username = name;
         this.password = password;
     }
 
-    public UserModel() {}
+    public User() {}
 
     public int getUserID() {
         return userID;
@@ -54,7 +55,7 @@ public class UserModel {
         dbHandler.executeUpdate(sql);
         dbHandler.disconnect();
 
-        UserModel newUser = UserModel.findByUsername(username);
+        User newUser = User.findByUsername(username);
         if(newUser != null) {
             this.userID = newUser.getUserID();
             this.username = newUser.getUsername();
@@ -69,7 +70,7 @@ public class UserModel {
         dbHandler.executeUpdate(sql);
         dbHandler.disconnect();
 
-        UserModel newUser = UserModel.findByID(this.userID);
+        User newUser = User.findByID(this.userID);
         if(newUser != null) {
             this.userID = newUser.getUserID();
             this.username = newUser.getUsername();
@@ -77,21 +78,21 @@ public class UserModel {
         }
     }
 
-    public static UserModel findByID(int id) throws SQLException {
+    public static User findByID(int id) throws SQLException {
         DBHandler db = new DBHandler();
         db.connect();
 
         String query = "SELECT * FROM users WHERE user_id=" + id;
         ResultSet resultSet = db.executeQuery(query);
 
-        UserModel user = null;
+        User user = null;
 
         if(resultSet.next()) {
             int userID = resultSet.getInt("user_id");
             String username = resultSet.getString("username");
             String password = resultSet.getString("password");
 
-            user = new UserModel(userID, username, password);
+            user = new User(userID, username, password);
         }
 
         resultSet.close();
@@ -99,21 +100,21 @@ public class UserModel {
         return user;
     }
 
-    public static UserModel findByUsername(String uname) throws SQLException {
+    public static User findByUsername(String uname) throws SQLException {
         DBHandler db = new DBHandler();
         db.connect();
 
         String query = "SELECT * FROM users WHERE username='" + uname + "'";
         ResultSet resultSet = db.executeQuery(query);
 
-        UserModel user = null;
+        User user = null;
 
         if(resultSet.next()) {
             int userID = resultSet.getInt("user_id");
             String username = resultSet.getString("username");
             String password = resultSet.getString("password");
 
-            user = new UserModel(userID, username, password);
+            user = new User(userID, username, password);
         }
 
         resultSet.close();
@@ -123,7 +124,7 @@ public class UserModel {
 
     @Override
     public String toString() {
-        return "UserModel{" +
+        return "User{" +
                 "userID=" + userID +
                 ", userName='" + username + '\'' +
                 ", password='" + password + '\'' +

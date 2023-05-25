@@ -3,18 +3,18 @@ package com.recipeFinder;
 import com.recipeFinder.components.Navbar;
 import com.recipeFinder.components.RecipeCard;
 import com.recipeFinder.components.Sidebar;
-import com.recipeFinder.features.GroceryList.AllGroceryListController;
-import com.recipeFinder.features.GroceryList.CreateGroceryListController;
-import com.recipeFinder.features.MealPlan.CreateMealPlanController;
-import com.recipeFinder.features.Recipe.CreateRecipeController;
-import com.recipeFinder.features.Auth.LoginController;
+import com.recipeFinder.features.GroceryList.controllers.AllGroceryListController;
+import com.recipeFinder.features.GroceryList.controllers.CreateGroceryListController;
+import com.recipeFinder.features.MealPlan.controllers.CreateMealPlanController;
+import com.recipeFinder.features.Recipe.controllers.CreateRecipeController;
+import com.recipeFinder.features.Auth.controllers.LoginController;
 import com.recipeFinder.shared.utils.Constants;
 import com.recipeFinder.models.RecipeModel;
-import com.recipeFinder.features.Auth.LoginView;
-import com.recipeFinder.features.GroceryList.AllGroceryListView;
-import com.recipeFinder.features.GroceryList.CreateGroceryListView;
-import com.recipeFinder.features.MealPlan.CreateMealPlanView;
-import com.recipeFinder.features.Recipe.CreateRecipeView;
+import com.recipeFinder.features.Auth.views.LoginView;
+import com.recipeFinder.features.GroceryList.views.AllGroceryListView;
+import com.recipeFinder.features.GroceryList.views.CreateGroceryListView;
+import com.recipeFinder.features.MealPlan.views.CreateMealPlanView;
+import com.recipeFinder.features.Recipe.views.CreateRecipeView;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -99,19 +99,7 @@ public class MainWindow extends JFrame {
         sidebar.groceryListButton.addActionListener(e -> cardLayout.show(cardPanel, "grocery-list"));
         sidebar.createGroceryListButton.addActionListener(e -> cardLayout.show(cardPanel, "create-grocery-list"));
         sidebar.createMealPlanButton.addActionListener(e -> cardLayout.show(cardPanel, "create-meal-plan"));
-        sidebar.logoutButton.addActionListener(e -> {
-            SwingUtilities.invokeLater(this::close);
-
-            LoginView loginView = new LoginView();
-            LoginController loginController = new LoginController(loginView);
-            SwingUtilities.invokeLater(loginView::open);
-
-            loginController.on("submit_success", (Void) -> {
-                SwingUtilities.invokeLater(loginView::close);
-                MainWindow mainWindowView = new MainWindow();
-            });
-
-        });
+        sidebar.logoutButton.addActionListener(e -> logout());
 
         createGroceryListController.on("submit", (Void) -> SwingUtilities.invokeLater(() -> {
             createGroceryListView.clearInputs();
@@ -150,6 +138,24 @@ public class MainWindow extends JFrame {
         };
 
         recipeFetcher.execute();
+    }
+
+    public void performCleanup() {
+        SwingUtilities.invokeLater(this::close);
+    }
+
+    public void logout() {
+        SwingUtilities.invokeLater(() -> {
+            performCleanup();
+            LoginView loginView = new LoginView();
+            LoginController loginController = new LoginController(loginView);
+            loginView.open();
+
+            loginController.on("submit_success", (Void) -> {
+                loginView.close();
+                MainWindow mainWindowView = new MainWindow();
+            });
+        });
     }
 
     public void close() {

@@ -1,7 +1,7 @@
-package com.recipeFinder.features.GroceryList;
+package com.recipeFinder.features.GroceryList.controllers;
 
 import com.recipeFinder.models.GroceryListModel;
-import com.recipeFinder.features.GroceryList.AllGroceryListView;
+import com.recipeFinder.features.GroceryList.views.AllGroceryListView;
 
 import java.util.ArrayList;
 

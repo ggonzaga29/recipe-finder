@@ -1,9 +1,9 @@
 package com.recipeFinder;
 
-import com.recipeFinder.features.Auth.LoginController;
+import com.recipeFinder.features.Auth.controllers.LoginController;
 import com.recipeFinder.shared.utils.Theme;
 
-import com.recipeFinder.features.Auth.LoginView;
+import com.recipeFinder.features.Auth.views.LoginView;
 
 import javax.swing.*;
 
@@ -18,22 +18,12 @@ public class Main {
             // launch the login
             LoginView loginView = new LoginView();
             LoginController loginController = new LoginController(loginView);
+//            SwingUtilities.invokeLater(loginView::open);
 
-//
-//            if (args.length > 0 && !args[0].equals("--skip-login")) {
-//            } else {
-                SwingUtilities.invokeLater(loginView::open);
-//
-//                loginController.setOnLoginSuccessListener(() -> {
-//                    SwingUtilities.invokeLater(loginView::close);
-//                    MainWindow mainWindowView = new MainWindow();
-//                });
-//            }
-
-            loginController.on("submit_success", (Void) -> {
-                SwingUtilities.invokeLater(loginView::close);
+//            loginController.on("submit_success", (Void) -> {
+//                SwingUtilities.invokeLater(loginView::close);
                 MainWindow mainWindowView = new MainWindow();
-            });
+//            });
 
         } catch (RuntimeException e) {
             throw new RuntimeException(e);

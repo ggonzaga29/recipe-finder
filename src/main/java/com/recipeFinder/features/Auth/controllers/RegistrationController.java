@@ -1,7 +1,9 @@
-package com.recipeFinder.features.Auth;
+package com.recipeFinder.features.Auth.controllers;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
-import com.recipeFinder.models.UserModel;
+import com.recipeFinder.features.Auth.models.User;
+import com.recipeFinder.features.Auth.views.LoginView;
+import com.recipeFinder.features.Auth.views.RegistrationView;
 import com.recipeFinder.MainWindow;
 
 import javax.swing.*;
@@ -40,7 +42,7 @@ public class RegistrationController {
 
         try {
             String usernameTrimmed = username.trim();
-            UserModel model = UserModel.findByUsername(usernameTrimmed);
+            User model = User.findByUsername(usernameTrimmed);
 
             if(model != null) {
                 JOptionPane.showMessageDialog(view, "User already exists.", "Registration", JOptionPane.ERROR_MESSAGE);
@@ -48,7 +50,7 @@ public class RegistrationController {
             }
 
             String hashedPassword = BCrypt.withDefaults().hashToString(12, password.toCharArray());
-            model = new UserModel(usernameTrimmed, hashedPassword);
+            model = new User(usernameTrimmed, hashedPassword);
             model.save();
 
             JOptionPane.showMessageDialog(view, "User created.", "Registration", JOptionPane.INFORMATION_MESSAGE);

@@ -1,5 +1,6 @@
-package com.recipeFinder.features.GroceryList;
+package com.recipeFinder.features.GroceryList.views;
 
+import com.recipeFinder.features.GroceryList.controllers.AllGroceryListController;
 import com.recipeFinder.models.GroceryListModel;
 import com.recipeFinder.features.View;
 
@@ -46,7 +47,6 @@ public class AllGroceryListView extends View {
             groceryListsPanel.revalidate();
             groceryListsPanel.repaint();
         });
-
     }
 
     protected JPanel createGroceryListPanel(String label, String date) {
