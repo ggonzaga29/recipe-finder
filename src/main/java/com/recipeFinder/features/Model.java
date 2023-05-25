@@ -57,10 +57,6 @@ public class Model {
         return fieldValues.toArray();
     }
 
-
-
-
-
     public static void main(String[] args) {
 
         class GroceryListModel extends Model {

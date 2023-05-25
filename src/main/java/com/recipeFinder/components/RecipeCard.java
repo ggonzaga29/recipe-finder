@@ -2,6 +2,9 @@ package com.recipeFinder.components;
 
 import com.recipeFinder.models.RecipeModel;
 import com.recipeFinder.features.Recipe.views.SingleRecipeViewWindow;
+import com.recipeFinder.shared.enums.SQLResult;
+import com.recipeFinder.shared.exceptions.RecordAlreadyExistsException;
+import com.recipeFinder.shared.utils.DBHandler;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -13,6 +16,9 @@ import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class RecipeCard extends JPanel {
     public RecipeCard(RecipeModel recipe) {
@@ -64,6 +70,7 @@ public class RecipeCard extends JPanel {
                 if(favoriteButton.getClientProperty("isHearted").equals(false)) {
                     favoriteButton.putClientProperty("isHearted", true);
                     favoriteButton.setIcon(new ImageIcon("src/main/resources/heart-solid-red.png"));
+                    handleFavorite();
                 } else {
                     favoriteButton.putClientProperty("isHearted", false);
                     favoriteButton.setIcon(new ImageIcon("src/main/resources/heart-solid.png"));
@@ -111,5 +118,36 @@ public class RecipeCard extends JPanel {
                 setCursor(Cursor.getDefaultCursor());
             }
         });
+    }
+
+    protected SQLResult handleFavorite() throws RecordAlreadyExistsException {
+        try (DBHandler db = new DBHandler()) {
+            db.connect();
+
+            String sql = "SELECT COUNT(*) FROM grocery_lists WHERE grocery_list_name = '" + name + "'";
+            try (ResultSet resultSet = db.executeQuery(sql)) {
+                resultSet.next();
+                int count = resultSet.getInt(1);
+
+                if (count > 0) {
+                    throw new RecordAlreadyExistsException("Record already exists. Cannot insert.");
+                }
+            }
+
+            sql = "INSERT INTO grocery_lists (grocery_list_name, grocery_list_date) VALUES ('" + getName() + "', '" + getDate() + "')";
+            try (Statement statement = db.getConnection().createStatement()) {
+                int rowsAffected = statement.executeUpdate(sql);
+
+                if (rowsAffected > 0) {
+                    return SQLResult.SUCCESS;
+                } else {
+                    return SQLResult.FAILURE;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return SQLResult.FAILURE;
+        }
+
     }
 }
