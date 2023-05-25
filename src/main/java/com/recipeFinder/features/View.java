@@ -91,4 +91,13 @@ public class View extends JPanel {
         }
     }
 
+    public void updateView() {
+        removeAll();
+        initComponents();
+        revalidate();
+        repaint();
+    }
+
+    public void initComponents() {}
+
 }

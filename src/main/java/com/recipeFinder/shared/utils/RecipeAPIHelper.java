@@ -11,7 +11,7 @@ public class RecipeAPIHelper {
     /**
      * Obviously in a production environment, this would be stored somewhere else
      */
-    public static final String RECIPE_URL = "https://api.edamam.com/api/recipes/v2?type=public&app_id=8c9b3254&app_key=49dde40fd0e2230db8b0f3d9133f7465&cuisineType=Asian&imageSize=THUMBNAIL&random=true";
+    public static final String RECIPE_URL = "https://api.edamam.com/api/recipes/v2?type=public&app_id=8c9b3254&app_key=49dde40fd0e2230db8b0f3d9133f7465&cuisineType=Asian&imageSize=THUMBNAIL&random=true&q=chicken";
 
     public static final MediaType JSON = MediaType.get("application/json");
 

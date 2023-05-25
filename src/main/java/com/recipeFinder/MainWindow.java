@@ -1,25 +1,22 @@
 package com.recipeFinder;
 
 import com.recipeFinder.components.Navbar;
-import com.recipeFinder.components.RecipeCard;
 import com.recipeFinder.components.Sidebar;
-import com.recipeFinder.features.GroceryList.controllers.AllGroceryListController;
 import com.recipeFinder.features.GroceryList.controllers.CreateGroceryListController;
 import com.recipeFinder.features.MealPlan.controllers.CreateMealPlanController;
 import com.recipeFinder.features.Recipe.controllers.CreateRecipeController;
 import com.recipeFinder.features.Auth.controllers.LoginController;
+import com.recipeFinder.features.Recipe.views.CommunityRecipesView;
 import com.recipeFinder.shared.utils.Constants;
-import com.recipeFinder.models.RecipeModel;
 import com.recipeFinder.features.Auth.views.LoginView;
-import com.recipeFinder.features.GroceryList.views.AllGroceryListView;
 import com.recipeFinder.features.GroceryList.views.CreateGroceryListView;
 import com.recipeFinder.features.MealPlan.views.CreateMealPlanView;
 import com.recipeFinder.features.Recipe.views.CreateRecipeView;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
-import java.util.ArrayList;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * The main window of the Flavor Finder application.
@@ -29,10 +26,10 @@ public class MainWindow extends JFrame {
     public MainWindow() {
         setTitle("Flavor Finder " + Constants.VERSION_NUMBER());
         setIconImage(Constants.STANDARD_ICON);
-        setSize(1250, 768);
+        setSize(1366, 768);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setMinimumSize(new Dimension(850, 600));
+        setMinimumSize(new Dimension(1366, 768));
 
         Navbar navbar = new Navbar();
         Sidebar sidebar = new Sidebar();
@@ -41,11 +38,7 @@ public class MainWindow extends JFrame {
         mainContentPanel.setLayout(new BorderLayout());
 
         navbar.menuButton.addActionListener(e -> {
-            if (sidebar.isVisible()) {
-                sidebar.setVisible(false);
-            } else {
-                sidebar.setVisible(true);
-            }
+            sidebar.toggle();
         });
 
         CardLayout cardLayout = new CardLayout();
@@ -53,34 +46,12 @@ public class MainWindow extends JFrame {
         cardPanel.setLayout(cardLayout);
         mainContentPanel.add(cardPanel);
 
-        JPanel recipePanel = new JPanel(new BorderLayout());
-        recipePanel.setBorder(new EmptyBorder(0, 0, 0, 0));
-
-        JPanel recipeCardsPanel = new JPanel();
-        recipeCardsPanel.setLayout(new FlowLayout(FlowLayout.LEADING, 10, 10));
-        recipeCardsPanel.setPreferredSize(new Dimension(recipePanel.getWidth(), Integer.MAX_VALUE));
-
-        JPanel recipeSearchPanel = new JPanel();
-        JTextField recipeSearchInput = new JTextField();
-
-        int width = (int) recipeCardsPanel.getPreferredSize().getWidth();
-        System.out.println(width);
-        recipeSearchPanel.setPreferredSize(new Dimension(width, 100));
-        recipeSearchPanel.add(recipeSearchInput, BorderLayout.CENTER);
-
-        JScrollPane jScrollPane = new JScrollPane(recipeCardsPanel);
-        jScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        jScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        jScrollPane.getVerticalScrollBar().setUnitIncrement(16);
-        jScrollPane.setPreferredSize(new Dimension(recipeCardsPanel.getWidth(), Integer.MAX_VALUE));
-        jScrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
-
         // Initialize MVC Components
+        CommunityRecipesView communityRecipesView = new CommunityRecipesView();
+
         CreateRecipeView createRecipeView = new CreateRecipeView();
         CreateRecipeController createRecipeController = new CreateRecipeController(createRecipeView);
 
-        AllGroceryListView groceryListView = new AllGroceryListView();
-        AllGroceryListController allGroceryListController = new AllGroceryListController(groceryListView);
 
         CreateGroceryListView createGroceryListView = new CreateGroceryListView();
         CreateGroceryListController createGroceryListController = new CreateGroceryListController(createGroceryListView);
@@ -88,24 +59,17 @@ public class MainWindow extends JFrame {
         CreateMealPlanView createMealPlanView = new CreateMealPlanView();
         CreateMealPlanController createMealPlanController = new CreateMealPlanController(createMealPlanView);
 
-        cardPanel.add(jScrollPane, "recipe-cards");
+
+        cardPanel.add(communityRecipesView, "recipe-cards");
         cardPanel.add(createRecipeView, "create-recipes");
-        cardPanel.add(groceryListView, "grocery-list");
         cardPanel.add(createGroceryListView, "create-grocery-list");
         cardPanel.add(createMealPlanView, "create-meal-plan");
 
         sidebar.homeButton.addActionListener(e -> cardLayout.show(cardPanel, "recipe-cards"));
         sidebar.createRecipeButton.addActionListener(e -> cardLayout.show(cardPanel, "create-recipes"));
-        sidebar.groceryListButton.addActionListener(e -> cardLayout.show(cardPanel, "grocery-list"));
         sidebar.createGroceryListButton.addActionListener(e -> cardLayout.show(cardPanel, "create-grocery-list"));
         sidebar.createMealPlanButton.addActionListener(e -> cardLayout.show(cardPanel, "create-meal-plan"));
         sidebar.logoutButton.addActionListener(e -> logout());
-
-        createGroceryListController.on("submit", (Void) -> SwingUtilities.invokeLater(() -> {
-            createGroceryListView.clearInputs();
-            allGroceryListController.viewGroceryListItems();
-            cardLayout.show(cardPanel, "grocery-list");
-        }));
 
         setLayout(new BorderLayout());
         add(navbar, BorderLayout.NORTH);
@@ -113,31 +77,6 @@ public class MainWindow extends JFrame {
         add(mainContentPanel, BorderLayout.CENTER);
         setVisible(true);
 
-        SwingWorker<ArrayList<RecipeModel>, Void> recipeFetcher = new SwingWorker<>() {
-            @Override
-            protected ArrayList<RecipeModel> doInBackground() {
-                return RecipeModel.getAll(30);
-            }
-
-            @Override
-            protected void done() {
-                try {
-                    ArrayList<RecipeModel> recipes = get();
-                    for (RecipeModel recipe : recipes) {
-                        JPanel recipeCard = new RecipeCard(recipe);
-                        recipeCard.setBackground(Color.white);
-                        recipeCardsPanel.add(recipeCard);
-                    }
-
-                    recipeCardsPanel.revalidate();
-                    recipeCardsPanel.repaint();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-
-        recipeFetcher.execute();
     }
 
     public void performCleanup() {

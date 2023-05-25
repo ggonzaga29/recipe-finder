@@ -8,4 +8,4 @@ if [ ! -f "$WRAPPER_PATH/maven-wrapper.jar" ]; then
     exit 1
 fi
 
-exec ./mvnw exec:java -Dexec.mainClass=com.recipeFinder.Main
+./mvnw exec:java -Dexec.mainClass=com.recipeFinder.Main

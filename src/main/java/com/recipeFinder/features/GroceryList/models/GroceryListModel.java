@@ -1,4 +1,4 @@
-package com.recipeFinder.models;
+package com.recipeFinder.features.GroceryList.models;
 
 import com.recipeFinder.shared.enums.SQLResult;
 import com.recipeFinder.shared.exceptions.RecordAlreadyExistsException;
@@ -21,8 +21,17 @@ public class GroceryListModel {
     }
 
     public GroceryListModel(String name, String date) {
-        this.name = name;
-        this.date = date;
+
+        this.name = name.trim();
+        this.date = date.trim();
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -74,7 +83,7 @@ public class GroceryListModel {
         }
     }
 
-    public SQLResult save() {
+    public SQLResult save() throws RecordAlreadyExistsException {
         try (DBHandler db = new DBHandler()) {
             db.connect();
 
@@ -98,8 +107,50 @@ public class GroceryListModel {
                     return SQLResult.FAILURE;
                 }
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return SQLResult.FAILURE;
+        }
+
+    }
+
+    public SQLResult update() {
+        try (DBHandler db = new DBHandler()) {
+            db.connect();
+
+            String sql = String.format("UPDATE grocery_lists SET grocery_list_name='%s', grocery_list_date='%s' WHERE grocery_list_id=%d", getName(), getDate(), getId());
+            try (Statement statement = db.getConnection().createStatement()) {
+                int rowsAffected = statement.executeUpdate(sql);
+
+                if (rowsAffected > 0) {
+                    return SQLResult.SUCCESS;
+                } else {
+                    return SQLResult.FAILURE;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return SQLResult.FAILURE;
+        }
+    }
+
+    public SQLResult delete() {
+        try (DBHandler db = new DBHandler()) {
+            db.connect();
+
+            String sql = "DELETE FROM grocery_lists WHERE grocery_list_id=" + getId();
+            try (Statement statement = db.getConnection().createStatement()) {
+                int rowsAffected = statement.executeUpdate(sql);
+
+                if (rowsAffected > 0) {
+                    return SQLResult.SUCCESS;
+                } else {
+                    return SQLResult.FAILURE;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return SQLResult.FAILURE;
         }
     }
 
@@ -130,8 +181,35 @@ public class GroceryListModel {
         }
     }
 
+    public static GroceryListModel findByID(int _id) {
+        DBHandler db = new DBHandler();
+
+        try {
+            db.connect();
+            String sql = String.format("SELECT * FROM grocery_lists WHERE grocery_list_id=%d", _id);
+            ResultSet resultSet = db.executeQuery(sql);
+
+            GroceryListModel groceryListModel = null;
+
+            if (resultSet.next()) {
+                int id = resultSet.getInt("grocery_list_id");
+                String name = resultSet.getString("grocery_list_name");
+                String date = resultSet.getString("grocery_list_date");
+
+                groceryListModel = new GroceryListModel(id, name, date);
+            }
+
+            resultSet.close();
+            return groceryListModel;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            db.close();
+        }
+    }
+
     public static void main(String[] args) {
         GroceryListModel list = new GroceryListModel("asdfdf", "05/08/2002"); // should throw exception
-        list.save();
+//        list.save();
     }
 }
