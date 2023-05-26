@@ -17,10 +17,11 @@ public class RecipeModel {
     private String source;
     private String source_url;
     private String recipe_url;
+    private int isFavorite;
     private ArrayList<String> ingredientLines;
 
     public RecipeModel(int recipe_id, String label, double calories, int total_time, double total_weight, int yield,
-                       String image_url, String local_image_url, String source, String source_url, String recipe_url) {
+                       String image_url, String local_image_url, String source, String source_url, String recipe_url, int isFavorite) {
         this.recipe_id = recipe_id;
         this.label = label;
         this.calories = calories;
@@ -32,6 +33,7 @@ public class RecipeModel {
         this.source = source;
         this.source_url = source_url;
         this.recipe_url = recipe_url;
+        this.isFavorite = isFavorite;
         this.ingredientLines = new ArrayList<>();
     }
 
@@ -79,6 +81,14 @@ public class RecipeModel {
         return recipe_url;
     }
 
+    public int getIsFavorite() {
+        return isFavorite;
+    }
+
+    public void setIsFavorite(int isFavorite) {
+        this.isFavorite = isFavorite;
+    }
+
     public ArrayList<String> getIngredientLines() {
         return ingredientLines;
     }
@@ -92,9 +102,6 @@ public class RecipeModel {
     }
 
     public static ArrayList<RecipeModel> getAll(int limit, int offset) {
-        // TODO: Implement the logic to retrieve recipes from the database or API
-        // and return them as a list of RecipeModel objects.
-
         try {
             DBHandler db = new DBHandler();
             db.connect();
@@ -116,8 +123,9 @@ public class RecipeModel {
                 String source = resultSet.getString("source");
                 String sourceUrl = resultSet.getString("source_url");
                 String recipeUrl = resultSet.getString("recipe_url");
+                int isFavorite = resultSet.getInt("is_favorite");
 
-                RecipeModel recipe = new RecipeModel(recipeId, label, calories, totalTime, totalWeight, yield, imageUrl, localImageUrl, source, sourceUrl, recipeUrl);
+                RecipeModel recipe = new RecipeModel(recipeId, label, calories, totalTime, totalWeight, yield, imageUrl, localImageUrl, source, sourceUrl, recipeUrl, isFavorite);
 
                 String query2 = "SELECT * FROM ingredientLines WHERE recipe_id=" + recipeId + " ORDER BY ingredient_line_order";
                 ResultSet resultSet2 = db.executeQuery(query2);
@@ -125,7 +133,7 @@ public class RecipeModel {
                 while(resultSet2.next()) {
                     recipe.addIngredientLine(resultSet2.getString("ingredient_line_text"));
                 }
-
+    
                 recipes.add(recipe);
             }
 

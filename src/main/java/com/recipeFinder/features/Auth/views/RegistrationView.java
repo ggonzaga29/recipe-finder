@@ -6,6 +6,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import com.recipeFinder.features.Auth.controllers.RegistrationController;
+import com.recipeFinder.features.View;
 import com.recipeFinder.shared.utils.Constants;
 
 import com.recipeFinder.components.LinkLabel;
@@ -38,9 +39,14 @@ public class RegistrationView extends JFrame {
         setLocationRelativeTo(null);
 //        setDefaultLookAndFeelDecorated(true);
 
-        JPanel panel = new JPanel(new GridBagLayout());
+        JPanel panel = new View();
+        panel.setLayout(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.insets = new Insets(10, 10, 10, 10);
+
+        // forward methods
+//        super.showMessage = panel.showMessage;
+
 
         // Icon Label
         JLabel iconLabel = new JLabel("<html><body><h2>Create an Account</h1></body></html>");

@@ -64,7 +64,7 @@ public class Sidebar extends JPanel {
 
             isAnimating = true;
 
-            Timer timer = new Timer(1, new ActionListener() {
+            Timer timer = new Timer(10, new ActionListener() {
                 int currentWidth = sidebar.getWidth();
 
                 /**
