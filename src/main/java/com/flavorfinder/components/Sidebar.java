@@ -204,13 +204,28 @@ public class Sidebar extends JPanel {
      *
      * @param t the current time (between 0 and 1)
      * @return the eased value
+     * This quintic easing function allows for smooth and natural transitions between states or animations, with the option to incorporate a bounce effect when reaching the endpoint (\(t = 1\)).
+     * The function is defined as:
+     * the normal formula for quintic easing is just (t * t * t * t * t) but I added a bounce effect to it
      */
-    private float quinticEasing(float t) {
+    private float quinticEasing(float t) { // ayaw hilabti sir lisud kaayo ni e explain hehe
+        // if t is less than 0.5 then ease in
         if (t < 0.5f) {
             return 16 * t * t * t * t * t; // Ease in
-        } else {
+            // 16 * t * t * t * t * t is equivalent to t * t * t * t * t * 2 * 2 * 2
+            // The 2 * 2 * 2 is to make the value increase faster
+            // The 2 * 2 * 2 is equivalent to 8
+        }
+        // else if t is greater than 0.5 then ease out with bounce
+        else {
             float reversedT = 1 - t;
+            // The reversedT is used to reverse the value of t
+            // For example, if t is 0.6, reversedT is 0.4
+            // This is used to make the animation ease out instead of ease in
+            // The reversedT is used in the formula instead of t
+            // This is because the reversedT is the opposite of t
             return 1 - 16 * reversedT * reversedT * reversedT * reversedT * reversedT; // Ease out with bounce
+
         }
     }
 

@@ -4,13 +4,21 @@ import javax.swing.*;
 import java.awt.*;
 
 public class UserRecipeCard extends JPanel {
-    public UserRecipeCard() {
+    private UserRecipeModel recipe;
+
+    public UserRecipeCard(UserRecipeModel recipe) {
+        this.recipe = recipe;
+
         setPreferredSize(new Dimension(330, 120));
         setLayout(new BorderLayout());
         setOpaque(true);
         setBackground(Color.decode("#555658"));
 
-        JLabel recipeName = new JLabel("Recipe Name");
+        initComponents();
+    }
+
+    public void initComponents() {
+        JLabel recipeName = new JLabel(recipe.getCustom_recipe_label());
         recipeName.setFont(new Font("Arial", Font.BOLD, 18));
 
         JLabel recipeDescription = new JLabel("Recipe Description");

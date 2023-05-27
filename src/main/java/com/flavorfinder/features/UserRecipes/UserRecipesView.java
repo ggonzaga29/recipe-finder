@@ -1,9 +1,12 @@
 package com.flavorfinder.features.UserRecipes;
 
+import com.flavorfinder.features.Auth.models.User;
 import com.flavorfinder.features.View;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class UserRecipesView extends View {
 
@@ -20,15 +23,24 @@ public class UserRecipesView extends View {
         titlePanel.add(title);
 
         JPanel userRecipesCardPanel = new JPanel();
-        userRecipesCardPanel.setLayout(new GridLayout(0, 3, 10, 10));
+        userRecipesCardPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         userRecipesCardPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        for (int i = 0; i < 10; i++) {
-            UserRecipeCard userRecipeCard = new UserRecipeCard();
-            userRecipesCardPanel.add(userRecipeCard);
+        JScrollPane scrollPane = new JScrollPane(userRecipesCardPanel);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
+        userRecipesCardPanel.setPreferredSize(new Dimension(scrollPane.getWidth(), scrollPane.getHeight()));
+
+
+        ArrayList<UserRecipeModel> userRecipes = UserRecipeModel.getAll();
+
+        for(UserRecipeModel recipe : userRecipes) {
+            UserRecipeCard card = new UserRecipeCard(recipe);
+            userRecipesCardPanel.add(card);
         }
 
         add(titlePanel, BorderLayout.NORTH);
-        add(userRecipesCardPanel, BorderLayout.CENTER);
+        add(scrollPane, BorderLayout.CENTER);
     }
 }
