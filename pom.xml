@@ -23,7 +23,7 @@
                     </descriptors>
                     <archive>
                         <manifest>
-                            <mainClass>com.recipeFinder.Main</mainClass>
+                            <mainClass>com.flavorfinder.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

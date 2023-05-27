@@ -38,7 +38,7 @@ mvnw clean install
 
 Run the Java Swing app
 ```bash
-mvnw exec:java -Dexec.mainClass=com.recipeFinder.Main
+mvnw exec:java -Dexec.mainClass=com.flavorfinder.Main
 ```
 
 If somehow di ni mo work kani ang e run:

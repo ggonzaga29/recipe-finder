@@ -2,7 +2,7 @@
 
 Run program (mvn or mvnw)
 ```bash
-mvnw exec:java -D"exec.mainClass"="com.recipeFinder.Main"
+mvnw exec:java -D"exec.mainClass"="com.flavorfinder.Main"
 ```
 
 ## Scripts

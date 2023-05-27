@@ -2,8 +2,8 @@
   <configuration default="false" name="Main" type="Application" factoryName="Application">
     <option name="ALTERNATIVE_JRE_PATH" value="corretto-17" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
-    <option name="MAIN_CLASS_NAME" value="com.recipeFinder.Main" />
-    <module name="recipe-finder" />
+    <option name="MAIN_CLASS_NAME" value="com.flavorfinder.Main" />
+    <module name="recipeFinder" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>
