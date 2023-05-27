@@ -23,8 +23,16 @@ public class Sidebar extends JPanel {
     public JButton collectionButton;
     public JButton categoriesButton;
     public JButton logoutButton;
+
+    // Sidebar configuration variables
     private boolean isAnimating = false;
-    private int activeIndex = 0;
+    private boolean isSidebarToggled = true;
+    private int minWidth = 50;
+    private int maxWidth = 200;
+    private int animationTime = 18;
+    private int animationStep = 1; // AYAW NI HILABTI YAWAAAAA
+    // end Sidebar configuration variables
+
     private ArrayList<JButton> buttons;
 
     /**
@@ -96,7 +104,7 @@ public class Sidebar extends JPanel {
     public void toggle() {
         JPanel sidebar = this;
 
-        if (sidebar.isVisible()) {
+        if (isSidebarToggled) {
             // If the sidebar is already visible, hide it gradually with animation
             if (isAnimating) {
                 return; // Animation is already in progress, exit the method
@@ -104,8 +112,13 @@ public class Sidebar extends JPanel {
 
             isAnimating = true;
 
-            Timer timer = new Timer(10, new ActionListener() {
+            Timer timer = new Timer(animationTime, new ActionListener() {
                 int currentWidth = sidebar.getWidth();
+                int startWidth = currentWidth;
+                int targetWidth = minWidth;
+                int distance = targetWidth - startWidth;
+                int elapsedTime = 0;
+                int duration = animationTime;
 
                 /**
                  * Action performed when the timer ticks.
@@ -114,17 +127,25 @@ public class Sidebar extends JPanel {
                  */
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    currentWidth -= 10; // Decrease the width by 10 pixels
+                    elapsedTime += animationStep;
 
-                    if (currentWidth <= 0) {
-                        sidebar.setVisible(false); // Hide the sidebar
+                    if (elapsedTime >= duration) {
+                        isSidebarToggled = false;
+                        currentWidth = targetWidth; // Set the width to the target width
                         ((Timer) e.getSource()).stop(); // Stop the timer
                         isAnimating = false; // Animation is complete
+                    } else {
+                        // Calculate the eased value using the easing function
+                        float t = (float) elapsedTime / duration;
+                        float easedValue = quinticEasing(t);
+
+                        currentWidth = startWidth + Math.round(easedValue * distance);
                     }
 
                     // Update the sidebar's size
                     sidebar.setPreferredSize(new Dimension(currentWidth, sidebar.getHeight()));
                     sidebar.revalidate(); // Revalidate the sidebar to reflect the new size
+                    sidebar.repaint();
                 }
             });
 
@@ -137,12 +158,13 @@ public class Sidebar extends JPanel {
 
             isAnimating = true;
 
-            sidebar.setVisible(true);
-            int targetWidth = 200;
-            int initialWidth = 0;
-
-            Timer timer = new Timer(1, new ActionListener() {
-                int currentWidth = initialWidth;
+            Timer timer = new Timer(animationTime, new ActionListener() {
+                int currentWidth = getWidth();
+                int startWidth = currentWidth;
+                int targetWidth = maxWidth;
+                int distance = targetWidth - startWidth;
+                int elapsedTime = 0;
+                int duration = animationTime;
 
                 /**
                  * Action performed when the timer ticks.
@@ -151,23 +173,47 @@ public class Sidebar extends JPanel {
                  */
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    currentWidth += 10; // Increase the width by 10 pixels
+                    elapsedTime += animationStep;
 
-                    if (currentWidth >= targetWidth) {
-                        currentWidth = targetWidth; // Set the width to the target width
-                        ((Timer) e.getSource()).stop(); // Stop the timer
-                        isAnimating = false; // Animation is complete
+                    if (elapsedTime >= duration) {
+                        isSidebarToggled = true;
+                        currentWidth = targetWidth;
+                        ((Timer) e.getSource()).stop();
+                        isAnimating = false;
+                    } else {
+
+                        float t = (float) elapsedTime / duration;
+                        float easedValue = quinticEasing(t); // Applies easing function to the time, creating a smooth animation
+
+                        currentWidth = startWidth + Math.round(easedValue * distance); // The width is the start width plus the eased value multiplied by the distance
                     }
 
                     // Update the sidebar's size
                     sidebar.setPreferredSize(new Dimension(currentWidth, sidebar.getHeight()));
                     sidebar.revalidate();
+                    sidebar.repaint();
                 }
             });
 
             timer.start(); // Start the animation
         }
     }
+
+    /**
+     * Easing function for quinticEasing animation.
+     *
+     * @param t the current time (between 0 and 1)
+     * @return the eased value
+     */
+    private float quinticEasing(float t) {
+        if (t < 0.5f) {
+            return 16 * t * t * t * t * t; // Ease in
+        } else {
+            float reversedT = 1 - t;
+            return 1 - 16 * reversedT * reversedT * reversedT * reversedT * reversedT; // Ease out with bounce
+        }
+    }
+
 
     public void setActiveButton(String viewName) {
         for(JButton button : buttons) {
@@ -204,7 +250,7 @@ public class Sidebar extends JPanel {
         btn.setMaximumSize(buttonSize);
         btn.setHorizontalAlignment(SwingConstants.LEFT);
         btn.setIconTextGap(16);
-        btn.setBorder(new EmptyBorder(padding, padding, padding, padding));
+        btn.setBorder(new EmptyBorder(padding, 12, padding, padding));
 
         return btn;
     }

@@ -17,7 +17,7 @@ public class Navbar extends JPanel {
 
         menuButton = new JButton(new ImageIcon("src/main/resources/bars-solid.png"));
         menuButton.setBackground(Color.decode("#2a2c2e"));
-        menuButton.setBorder(new EmptyBorder(50, 15, 50, 15));
+        menuButton.setBorder(new EmptyBorder(50, 11, 50, 15));
         menuButton.setOpaque(false);
         add(menuButton);
         add(Box.createHorizontalStrut(20));
