@@ -38,16 +38,9 @@ public class UserRecipesView extends View {
 
         ArrayList<UserRecipeModel> userRecipes = UserRecipeModel.getAll();
 
-        if (userRecipes != null) {
-            for(UserRecipeModel recipe : userRecipes) {
-                UserRecipeCard card = new UserRecipeCard(recipe);
-                userRecipesCardPanel.add(card);
-                card.addMouseListener(new MouseAdapter() {
-                    public void mouseClicked(MouseEvent evt) {
-                        controller.showRecipeDetails(recipe);
-                    }
-                });
-            }
+        for(UserRecipeModel userRecipe : userRecipes) {
+            UserRecipeCard userRecipeCard = new UserRecipeCard(userRecipe);
+            userRecipesCardPanel.add(userRecipeCard);
         }
 
         add(titlePanel, BorderLayout.NORTH);

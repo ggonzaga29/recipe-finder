@@ -21,7 +21,7 @@ public class Main {
             UIManager.put("TextField.font", Constants.getMainFont());
             UIManager.put("PasswordField.font", Constants.getMainFont());
 
-            // launch the login
+//             launch the login
             LoginView loginView = new LoginView();
             LoginController loginController = new LoginController(loginView);
             SwingUtilities.invokeLater(loginView::open);

@@ -13,5 +13,7 @@ public class CreateUserRecipeController extends Controller {
     public void handleCreateRecipe(String label, Double calories, Double weight, int yield, String instructions, String ingredients) {
         UserRecipeModel customRecipe = new UserRecipeModel(label, calories, weight, yield, instructions, ingredients);
         customRecipe.save();
+
+        emit("recipeCreated");
     }
 }

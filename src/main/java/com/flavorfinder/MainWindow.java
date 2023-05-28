@@ -10,6 +10,8 @@ import com.flavorfinder.components.Navbar;
 import com.flavorfinder.components.Sidebar;
 import com.flavorfinder.features.Auth.controllers.LoginController;
 import com.flavorfinder.features.Auth.views.LoginView;
+import com.flavorfinder.features.Collections.CollectionController;
+import com.flavorfinder.features.Collections.CollectionsView;
 import com.flavorfinder.features.Favorites.FavoritesView;
 import com.flavorfinder.features.GroceryList.controllers.GroceryListController;
 import com.flavorfinder.features.GroceryList.views.GroceryListView;
@@ -82,6 +84,9 @@ public class MainWindow extends JFrame {
         UserRecipesView userRecipesView = new UserRecipesView();
         UserRecipesController userRecipesController = new UserRecipesController(userRecipesView);
 
+        CollectionsView collectionsView = new CollectionsView();
+        CollectionController collectionController = new CollectionController(collectionsView);
+
         // Add views to the cardPanel
         cardPanel.add(communityRecipesView, ViewNames.COMMUNITY_RECIPES);
         cardPanel.add(createUserRecipeView, ViewNames.CREATE_RECIPES);
@@ -89,6 +94,7 @@ public class MainWindow extends JFrame {
         cardPanel.add(createMealPlanView, ViewNames.CREATE_MEAL_PLAN);
         cardPanel.add(favoritesView, ViewNames.FAVORITES);
         cardPanel.add(userRecipesView, ViewNames.USER_RECIPES);
+        cardPanel.add(collectionsView, ViewNames.COLLECTIONS);
 
         // Add views to the viewManager
         viewManager.addView(ViewNames.COMMUNITY_RECIPES, communityRecipesView);
@@ -97,6 +103,7 @@ public class MainWindow extends JFrame {
         viewManager.addView(ViewNames.CREATE_MEAL_PLAN, createMealPlanView);
         viewManager.addView(ViewNames.FAVORITES, favoritesView);
         viewManager.addView(ViewNames.USER_RECIPES, userRecipesView);
+        viewManager.addView(ViewNames.COLLECTIONS, collectionsView);
 
         // Map each button to its corresponding view name
         // To eliminate Redundant code
@@ -107,6 +114,7 @@ public class MainWindow extends JFrame {
         buttonToViewMap.put(sidebar.groceryListButton, ViewNames.GROCERY_LIST);
         buttonToViewMap.put(sidebar.createMealPlanButton, ViewNames.CREATE_MEAL_PLAN);
         buttonToViewMap.put(sidebar.userRecipesButton, ViewNames.USER_RECIPES);
+        buttonToViewMap.put(sidebar.collectionsButton, ViewNames.COLLECTIONS);
 
         viewManager.showView(ViewNames.COMMUNITY_RECIPES);
         sidebar.setActiveButton(ViewNames.COMMUNITY_RECIPES);
@@ -117,6 +125,11 @@ public class MainWindow extends JFrame {
             viewManager.showView(viewName);
             sidebar.setActiveButton(viewName);
         };
+
+        createUserRecipeController.on("recipeCreated", (Void) -> {
+            viewManager.showView(ViewNames.USER_RECIPES);
+            sidebar.setActiveButton(ViewNames.USER_RECIPES);
+        });
 
         buttonToViewMap.forEach((button, viewName) -> button.addActionListener(sidebarButtonListener));
         sidebar.logoutButton.addActionListener(e -> logout());

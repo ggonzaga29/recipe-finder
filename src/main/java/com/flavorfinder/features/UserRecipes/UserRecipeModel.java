@@ -1,6 +1,7 @@
 package com.flavorfinder.features.UserRecipes;
 
 import com.flavorfinder.shared.utils.DBHandler;
+import org.sqlite.core.DB;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -29,6 +30,34 @@ public class UserRecipeModel {
         this.custom_recipe_instructions = custom_recipe_instructions;
         this.custom_recipe_ingredients = custom_recipe_ingredients;
         this.isFavorite = isFavorite;
+    }
+
+    public static ArrayList<UserRecipeModel> getAllFavorites() {
+        try(DBHandler db = new DBHandler()) {
+            db.connect();
+            ResultSet rs = db.executeQuery("SELECT * FROM custom_recipes WHERE isFavorite = 1");
+
+            ArrayList<UserRecipeModel> recipes = new ArrayList<>();
+
+            while(rs.next()) {
+                recipes.add(new UserRecipeModel(
+                        rs.getInt("custom_recipe_id"),
+                        rs.getString("custom_recipe_label"),
+                        rs.getDouble("custom_recipe_calories"),
+                        rs.getDouble("custom_recipe_weight"),
+                        rs.getInt("custom_recipe_yield"),
+                        rs.getString("custom_recipe_instructions"),
+                        rs.getString("custom_recipe_ingredients").split(","),
+                        rs.getInt("isFavorite")
+                ));
+            }
+
+            return recipes;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     public int getCustom_recipe_id() {

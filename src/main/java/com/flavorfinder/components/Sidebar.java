@@ -20,7 +20,7 @@ public class Sidebar extends JPanel {
     public JButton favoritesButton;
     public JButton groceryListButton;
     public JButton createMealPlanButton;
-    public JButton collectionButton;
+    public JButton collectionsButton;
     public JButton categoriesButton;
     public JButton logoutButton;
 
@@ -54,7 +54,7 @@ public class Sidebar extends JPanel {
         favoritesButton = createSidebarButton("Favorites", "heart-solid.png", ViewNames.FAVORITES);
         groceryListButton = createSidebarButton("Grocery List", "shopping-cart-solid.png", ViewNames.GROCERY_LIST);
         createMealPlanButton = createSidebarButton("Create Meal Plan", "ppt.png", ViewNames.CREATE_MEAL_PLAN);
-//        collectionButton = createSidebarButton("Recipe Collections", "src/main/resources/list-ol-solid.png");
+        collectionsButton = createSidebarButton("Recipe Collections", "list-ol-solid.png", ViewNames.COLLECTIONS);
 //        categoriesButton = createSidebarButton("Categories", "src/main/resources/list-alt-solid.png");
 
         add(homeButton);
@@ -63,7 +63,7 @@ public class Sidebar extends JPanel {
         add(favoritesButton);
         add(groceryListButton);
         add(createMealPlanButton);
-//        add(collectionButton);
+        add(collectionsButton);
 //        add(categoriesButton);
         add(Box.createVerticalGlue()); // Vertical glue to fill the remaining space
         add(logoutButton);

@@ -2,6 +2,7 @@ package com.flavorfinder.components;
 
 import com.flavorfinder.features.Recipe.views.SingleRecipeViewWindow;
 import com.flavorfinder.features.Reviews.CreateReviewWindow;
+import com.flavorfinder.features.Reviews.ViewReviewsWindow;
 import com.flavorfinder.models.RecipeModel;
 import com.flavorfinder.shared.utils.DBHandler;
 
@@ -24,6 +25,7 @@ public class CommunityRecipeCard extends JPanel {
     private RecipeModel recipe;
     private JButton favoriteButton;
     private JButton reviewButton;
+    private JButton viewReviewsButton;
     ImagePanel imagePanel;
 
     public CommunityRecipeCard(RecipeModel recipe) {
@@ -51,27 +53,34 @@ public class CommunityRecipeCard extends JPanel {
     }
 
     private void initializeComponents() {
-        setPreferredSize(new Dimension(330, 220)); // Set preferred size for the card panel
         setLayout(new BorderLayout());
         setOpaque(true);
 
         JLabel titleLabel = new JLabel(String.format("<html><h3 style='width: 200px; font-family: 'Century Gothic''>%s</h3></html>", recipe.getLabel()));
         favoriteButton = new JButton();
         reviewButton = new JButton();
+        viewReviewsButton = new JButton();
 
         JPanel cardBody = new JPanel();
-        cardBody.setLayout(new BoxLayout(cardBody, BoxLayout.X_AXIS));
-        cardBody.add(titleLabel);
-        cardBody.add(Box.createHorizontalGlue());
-        cardBody.add(reviewButton);
-        cardBody.add(favoriteButton);
+        cardBody.setLayout(new BorderLayout());
+        cardBody.add(titleLabel, BorderLayout.NORTH);
+
+        JPanel buttonsPanel = new JPanel();
+        buttonsPanel.setLayout(new BoxLayout(buttonsPanel, BoxLayout.X_AXIS));
+        buttonsPanel.add(reviewButton);
+        buttonsPanel.add(viewReviewsButton);
+        buttonsPanel.add(favoriteButton);
+        buttonsPanel.setBackground(Color.decode("#666769"));
+        buttonsPanel.setBorder(new EmptyBorder(0, 0, 10, 10));
+
+        cardBody.add(buttonsPanel, BorderLayout.SOUTH);
         cardBody.setBackground(Color.decode("#555658"));
 
         titleLabel.setAlignmentY(Component.TOP_ALIGNMENT);
         titleLabel.setForeground(Color.decode("#FFFFFF"));
         titleLabel.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        favoriteButton.setBorder(new EmptyBorder(15, 10, 10, 10));
+        favoriteButton.setBorder(new EmptyBorder(10, 10, 0, 10));
         favoriteButton.setBackground(Color.decode("#555658"));
         favoriteButton.setForeground(Color.decode("#FFFFFF"));
         favoriteButton.setFocusPainted(false);
@@ -87,14 +96,20 @@ public class CommunityRecipeCard extends JPanel {
         }
 
         reviewButton.setIcon(new ImageIcon(getClass().getResource("/star-solid.png")));
-        reviewButton.setBorder(new EmptyBorder(12, 10, 0, 0));
-        reviewButton.setBackground(Color.decode("#555658"));
-        reviewButton.setForeground(Color.decode("#FFFFFF"));
+        reviewButton.setBorder(new EmptyBorder(10, 10, 0, 0));
         reviewButton.setFocusPainted(false);
         reviewButton.setBorderPainted(false);
         reviewButton.setContentAreaFilled(false);
         reviewButton.setOpaque(false);
         reviewButton.setAlignmentY(Component.TOP_ALIGNMENT);
+
+        viewReviewsButton.setIcon(new ImageIcon(getClass().getResource("/comment-solid.png")));
+        viewReviewsButton.setBorder(new EmptyBorder(10, 10, 0, 0));
+        viewReviewsButton.setFocusPainted(false);
+        viewReviewsButton.setBorderPainted(false);
+        viewReviewsButton.setContentAreaFilled(false);
+        viewReviewsButton.setOpaque(false);
+        viewReviewsButton.setAlignmentY(Component.TOP_ALIGNMENT);
 
         add(cardBody, BorderLayout.CENTER);
 
@@ -109,7 +124,7 @@ public class CommunityRecipeCard extends JPanel {
             @Override
             public void mouseEntered(MouseEvent e) {
                 super.mouseEntered(e);
-                favoriteButton.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+                favoriteButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             }
 
             @Override
@@ -149,6 +164,15 @@ public class CommunityRecipeCard extends JPanel {
                 super.mouseClicked(e);
 
                 new CreateReviewWindow("community", recipe.getRecipeId());
+            }
+        });
+
+        viewReviewsButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+
+                new ViewReviewsWindow("community", recipe.getRecipeId());
             }
         });
     }

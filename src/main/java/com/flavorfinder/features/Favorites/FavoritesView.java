@@ -1,6 +1,8 @@
 package com.flavorfinder.features.Favorites;
 
 import com.flavorfinder.components.CommunityRecipeCard;
+import com.flavorfinder.features.UserRecipes.UserRecipeCard;
+import com.flavorfinder.features.UserRecipes.UserRecipeModel;
 import com.flavorfinder.features.View;
 import com.flavorfinder.models.RecipeModel;
 
@@ -40,6 +42,30 @@ public class FavoritesView extends View {
         add(favoritesPanel, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
 
+        // Show user favorites
+        SwingWorker<ArrayList<UserRecipeModel>, Void> userRecipeFetcher = new SwingWorker<>() {
+            @Override
+            protected ArrayList<UserRecipeModel> doInBackground() {
+                return UserRecipeModel.getAllFavorites();
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    ArrayList<UserRecipeModel> recipes = get();
+                    for (UserRecipeModel userRecipe : recipes) {
+                        JPanel recipeCard = new UserRecipeCard(userRecipe);
+                        recipeCardsPanel.add(recipeCard);
+                    }
+
+                    recipeCardsPanel.revalidate();
+                    recipeCardsPanel.repaint();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
         SwingWorker<ArrayList<RecipeModel>, Void> recipeFetcher = new SwingWorker<>() {
             @Override
             protected ArrayList<RecipeModel> doInBackground() {
@@ -63,6 +89,7 @@ public class FavoritesView extends View {
             }
         };
 
+        userRecipeFetcher.execute();
         recipeFetcher.execute();
     }
 }

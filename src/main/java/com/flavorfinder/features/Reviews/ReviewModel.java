@@ -5,6 +5,7 @@ import org.sqlite.core.DB;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class ReviewModel {
     private int review_id;
@@ -109,16 +110,47 @@ public class ReviewModel {
         // insert to db
         try (DBHandler db = new DBHandler()) {
             db.connect();
-            String sql = "INSERT INTO reviews (review_text, review_rating, user_id, community_recipe_id, user_recipe_id) VALUES(" +
-                    "'" + this.review_text + "'," +
-                    "" + this.review_rating + "," +
-                    "" + this.user_id + "," +
-                    "" + this.community_recipe_id + "," +
-                    "" + this.user_recipe_id + ");";
+            // include review type
+            String sql = "INSERT INTO reviews (review_text, review_rating, user_id, community_recipe_id, user_recipe_id, type) VALUES ('" + this.review_text + "', " + this.review_rating + ", " + this.user_id + ", " + this.community_recipe_id + ", " + this.user_recipe_id + ", '" + this.review_type + "');";
             db.executeUpdate(sql);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static ArrayList<ReviewModel> getAllByTypeAndId(String type, int id) {
+        String idColumn = "";
+        if(type.equals("community")) {
+            idColumn = "community_recipe_id";
+        } else if(type.equals("user")) {
+            idColumn = "user_recipe_id";
+        } else {
+            return null;
+        }
+
+        ArrayList<ReviewModel> reviews = new ArrayList<>();
+
+        try(DBHandler db = new DBHandler()) {
+            db.connect();
+            String sql = "SELECT * FROM reviews WHERE " + idColumn + " = " + id + " AND type='" + type  + "';";
+            ResultSet rs = db.executeQuery(sql);
+
+            while(rs.next()) {
+                ReviewModel review = new ReviewModel();
+                review.setReview_id(rs.getInt("review_id"));
+                review.setReview_text(rs.getString("review_text"));
+                review.setReview_rating(rs.getInt("review_rating"));
+                review.setUser_id(rs.getInt("user_id"));
+                review.setCommunity_recipe_id(rs.getInt("community_recipe_id"));
+                review.setUser_recipe_id(rs.getInt("user_recipe_id"));
+                reviews.add(review);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return reviews;
     }
 
     public static ReviewModel findById(int id) {
