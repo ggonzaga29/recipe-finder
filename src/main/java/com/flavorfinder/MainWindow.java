@@ -19,7 +19,9 @@ import com.flavorfinder.features.Recipe.controllers.CommunityRecipesController;
 import com.flavorfinder.features.Recipe.views.CommunityRecipesView;
 import com.flavorfinder.features.UserRecipes.CreateUserRecipeController;
 import com.flavorfinder.features.UserRecipes.CreateUserRecipeView;
+import com.flavorfinder.features.UserRecipes.UserRecipesController;
 import com.flavorfinder.features.UserRecipes.UserRecipesView;
+import com.flavorfinder.shared.CurrentUser;
 import com.flavorfinder.shared.ViewNames;
 import com.flavorfinder.shared.utils.Constants;
 import com.flavorfinder.shared.utils.ViewManager;
@@ -78,6 +80,7 @@ public class MainWindow extends JFrame {
         FavoritesView favoritesView = new FavoritesView();
 
         UserRecipesView userRecipesView = new UserRecipesView();
+        UserRecipesController userRecipesController = new UserRecipesController(userRecipesView);
 
         // Add views to the cardPanel
         cardPanel.add(communityRecipesView, ViewNames.COMMUNITY_RECIPES);
@@ -126,6 +129,10 @@ public class MainWindow extends JFrame {
     public void logout() {
         SwingUtilities.invokeLater(() -> {
             this.close();
+
+            CurrentUser user = CurrentUser.getInstance();
+            user.reset();
+
             LoginView loginView = new LoginView();
             LoginController loginController = new LoginController(loginView);
             loginView.open();

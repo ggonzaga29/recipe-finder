@@ -1,5 +1,7 @@
 package com.flavorfinder.components;
 
+import com.flavorfinder.shared.CurrentUser;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -23,6 +25,9 @@ public class Navbar extends JPanel {
         add(Box.createHorizontalStrut(20));
         JTextPane title = new JTextPane();
         add(new JLabel("<html><body style='font-family: 'Century Gothic'; font-size: 32px;'><h2>Flavor Finder</h2></body></html>"));
-        add(new JLabel("Welcome, "));
+
+        CurrentUser currentUser = CurrentUser.getInstance();
+
+        add(new JLabel("Welcome, " + currentUser.getUsername()));
     }
 }

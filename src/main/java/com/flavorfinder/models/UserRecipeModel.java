@@ -73,6 +73,10 @@ public class UserRecipeModel {
         this.ingredients = ingredients;
     }
 
+    public String toHtml() {
+        return "<html><body><h1>" + label + "</h1><p>Calories: " + calories + "</p><p>Weight: " + weight + "</p><p>Yield: " + yield + "</p><p>Instructions: " + instructions + "</p><p>Ingredients: " + ingredients + "</p></body></html>";
+    }
+
     @Override
     public String toString() {
         return "UserRecipeModel{" +

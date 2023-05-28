@@ -16,15 +16,26 @@ import java.awt.event.ActionListener;
  * </p>
  */
 public class ImagePanel extends JPanel {
-    private final BufferedImage backgroundImage;
+    private BufferedImage backgroundImage;
     private int darknessLevel; // Darkness level of the background (0-255)
     private int animationDuration; // Duration of the darkness level animation in milliseconds
 
     public ImagePanel(BufferedImage image) {
         this.backgroundImage = image;
+        this.darknessLevel = 0; // Set the initial darkness level to 0
+        this.animationDuration = 0; // Set the initial animation duration to 0 (no animation)
+    }
+
+    public ImagePanel() {
         setBackground(Color.decode("#eeeeee"));
         this.darknessLevel = 0; // Set the initial darkness level to 0
         this.animationDuration = 0; // Set the initial animation duration to 0 (no animation)
+    }
+
+    public void setBackgroundImage(BufferedImage image) {
+        this.backgroundImage = image;
+        revalidate();
+        repaint(); // Redraw the panel with the new background image
     }
 
     /**

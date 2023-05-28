@@ -1,6 +1,7 @@
 package com.flavorfinder.components;
 
 import com.flavorfinder.features.Recipe.views.SingleRecipeViewWindow;
+import com.flavorfinder.features.Reviews.CreateReviewWindow;
 import com.flavorfinder.models.RecipeModel;
 import com.flavorfinder.shared.utils.DBHandler;
 
@@ -22,6 +23,7 @@ public class CommunityRecipeCard extends JPanel {
 
     private RecipeModel recipe;
     private JButton favoriteButton;
+    private JButton reviewButton;
     ImagePanel imagePanel;
 
     public CommunityRecipeCard(RecipeModel recipe) {
@@ -55,11 +57,13 @@ public class CommunityRecipeCard extends JPanel {
 
         JLabel titleLabel = new JLabel(String.format("<html><h3 style='width: 200px; font-family: 'Century Gothic''>%s</h3></html>", recipe.getLabel()));
         favoriteButton = new JButton();
+        reviewButton = new JButton();
 
         JPanel cardBody = new JPanel();
         cardBody.setLayout(new BoxLayout(cardBody, BoxLayout.X_AXIS));
         cardBody.add(titleLabel);
         cardBody.add(Box.createHorizontalGlue());
+        cardBody.add(reviewButton);
         cardBody.add(favoriteButton);
         cardBody.setBackground(Color.decode("#555658"));
 
@@ -81,6 +85,16 @@ public class CommunityRecipeCard extends JPanel {
         } else {
             favoriteButton.setIcon(new ImageIcon(getResourceImage("heart-solid.png")));
         }
+
+        reviewButton.setIcon(new ImageIcon(getClass().getResource("/star-solid.png")));
+        reviewButton.setBorder(new EmptyBorder(12, 10, 0, 0));
+        reviewButton.setBackground(Color.decode("#555658"));
+        reviewButton.setForeground(Color.decode("#FFFFFF"));
+        reviewButton.setFocusPainted(false);
+        reviewButton.setBorderPainted(false);
+        reviewButton.setContentAreaFilled(false);
+        reviewButton.setOpaque(false);
+        reviewButton.setAlignmentY(Component.TOP_ALIGNMENT);
 
         add(cardBody, BorderLayout.CENTER);
 
@@ -116,6 +130,27 @@ public class CommunityRecipeCard extends JPanel {
                 }
             }
         });
+
+        reviewButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                super.mouseEntered(e);
+                reviewButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                super.mouseExited(e);
+                reviewButton.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+            }
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+
+                new CreateReviewWindow("community", recipe.getRecipeId());
+            }
+        });
     }
 
     private void loadRecipeImage() {
@@ -127,7 +162,6 @@ public class CommunityRecipeCard extends JPanel {
                 imagePanel = new ImagePanel(image);
                 imagePanel.setPreferredSize(new Dimension(getWidth(), 150));
                 imagePanel.setDarknessLevel(100);
-
 
                 imagePanel.addMouseListener(new MouseAdapter() {
                     @Override

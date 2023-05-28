@@ -2,7 +2,9 @@ package com.flavorfinder.features.UserRecipes;
 
 import com.flavorfinder.shared.utils.DBHandler;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -93,6 +95,25 @@ public class UserRecipeModel {
         this.isFavorite = isFavorite;
     }
 
+    public String toHtml() {
+        StringBuilder html = new StringBuilder();
+        html.append("<html>");
+        html.append("<h1>").append(custom_recipe_label).append("</h1>");
+        html.append("<h2>").append("Calories: ").append(custom_recipe_calories).append("</h2>");
+        html.append("<h2>").append("Weight: ").append(custom_recipe_weight).append("</h2>");
+        html.append("<h2>").append("Yield: ").append(custom_recipe_yield).append("</h2>");
+        html.append("<h2>").append("Ingredients: ").append("</h2>");
+        html.append("<ul>");
+        for (String ingredient : custom_recipe_ingredients) {
+            html.append("<li>").append(ingredient).append("</li>");
+        }
+        html.append("</ul>");
+        html.append("<h2>").append("Instructions: ").append("</h2>");
+        html.append("<p>").append(custom_recipe_instructions).append("</p>");
+        html.append("</html>");
+        return html.toString();
+    }
+
     @Override
     public String toString() {
         return "UserRecipeModel{" +
@@ -134,6 +155,31 @@ public class UserRecipeModel {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public void delete() {
+        try (DBHandler db = new DBHandler()) {
+            db.connect();
+
+            String query = "DELETE FROM custom_recipes WHERE custom_recipe_id = ?";
+            PreparedStatement preparedStatement = db.getConnection().prepareStatement(query);
+            preparedStatement.setInt(1, custom_recipe_id);
+            preparedStatement.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void save() {
+        try {
+            DBHandler dbHandler = new DBHandler();
+            dbHandler.connect();
+            String sql = "INSERT INTO custom_recipes (custom_recipe_label, custom_recipe_calories, custom_recipe_weight, custom_recipe_yield, custom_recipe_instructions, custom_recipe_ingredients, isFavorite) VALUES ('" + custom_recipe_label + "', '" + custom_recipe_calories + "', '" + custom_recipe_weight + "', '" + custom_recipe_yield + "', '" + custom_recipe_instructions + "', '" + String.join(",", custom_recipe_ingredients) + "', '" + isFavorite + "')";
+            dbHandler.executeUpdate(sql);
+            dbHandler.disconnect();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 }
