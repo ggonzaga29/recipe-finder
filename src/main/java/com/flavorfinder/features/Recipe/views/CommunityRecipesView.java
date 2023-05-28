@@ -101,7 +101,6 @@ public class CommunityRecipesView extends View {
         constraints.gridy = 2;
         recipeSearchPanel.add(paginationButtons, constraints);
 
-
         JScrollPane jScrollPane = new JScrollPane(recipeCardsPanel);
         jScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         jScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);

@@ -10,6 +10,7 @@ import com.flavorfinder.features.Auth.models.User;
 import com.flavorfinder.features.Auth.views.LoginView;
 import com.flavorfinder.features.Auth.views.RegistrationView;
 import com.flavorfinder.features.Controller;
+import com.flavorfinder.shared.CurrentUser;
 
 public class LoginController extends Controller {
     private final LoginView view;
@@ -55,6 +56,10 @@ public class LoginController extends Controller {
                     preferences.remove("username");
                 }
 
+                CurrentUser user = CurrentUser.getInstance();
+                user.setId(model.getUserID());
+                user.setUsername(model.getUsername());
+
                 emit("submit_success");
             }
         } catch (SQLException err) {
@@ -65,9 +70,4 @@ public class LoginController extends Controller {
     public void dispose() {
 
     }
-
-    public interface OnLoginSuccessListener {
-        void onLoginSuccess();
-    }
-
 }

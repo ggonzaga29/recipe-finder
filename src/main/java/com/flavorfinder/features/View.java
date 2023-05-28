@@ -18,6 +18,10 @@ public class View extends JPanel {
 //        setVisible(false);
     }
 
+    public View(LayoutManager layout) {
+        super(layout);
+    }
+
     /**
      * Displays a message dialog with the specified message and message type.
      *

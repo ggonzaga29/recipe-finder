@@ -6,9 +6,13 @@ import com.flavorfinder.features.View;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 public class UserRecipesView extends View {
+
+    private UserRecipesController controller;
 
     public UserRecipesView() {
         initComponents();
@@ -23,7 +27,7 @@ public class UserRecipesView extends View {
         titlePanel.add(title);
 
         JPanel userRecipesCardPanel = new JPanel();
-        userRecipesCardPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        userRecipesCardPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 15, 15));
         userRecipesCardPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         JScrollPane scrollPane = new JScrollPane(userRecipesCardPanel);
@@ -32,15 +36,25 @@ public class UserRecipesView extends View {
         scrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
         userRecipesCardPanel.setPreferredSize(new Dimension(scrollPane.getWidth(), scrollPane.getHeight()));
 
-
         ArrayList<UserRecipeModel> userRecipes = UserRecipeModel.getAll();
 
-        for(UserRecipeModel recipe : userRecipes) {
-            UserRecipeCard card = new UserRecipeCard(recipe);
-            userRecipesCardPanel.add(card);
+        if (userRecipes != null) {
+            for(UserRecipeModel recipe : userRecipes) {
+                UserRecipeCard card = new UserRecipeCard(recipe);
+                userRecipesCardPanel.add(card);
+                card.addMouseListener(new MouseAdapter() {
+                    public void mouseClicked(MouseEvent evt) {
+                        controller.showRecipeDetails(recipe);
+                    }
+                });
+            }
         }
 
         add(titlePanel, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
+    }
+
+    public void setController(UserRecipesController controller) {
+        this.controller = controller;
     }
 }

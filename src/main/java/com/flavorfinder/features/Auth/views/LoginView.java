@@ -19,6 +19,7 @@ public class LoginView extends JFrame {
     private JCheckBox rememberMeCheckbox;
     private LoginController controller;
     private JPanel mainPanel;
+    private boolean isLoginButtonClicked = false;
 
     public LoginView() {
         mainPanel = createMainPanel();
@@ -107,6 +108,11 @@ public class LoginView extends JFrame {
 
         // bind listeners to controller
         loginButton.addActionListener(e -> {
+            if(isLoginButtonClicked) {
+                return;
+            }
+
+            isLoginButtonClicked = true;
             String username = getUsername();
             String password = getPassword();
             controller.handleLogin(username, password);
